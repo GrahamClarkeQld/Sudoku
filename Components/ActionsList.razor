@@ -24,6 +24,7 @@
 			</button>
 		</div>
 	</div>
+	<div></div>
 	<div>
 		<button class="common-button" @onclick="AddBreakpointButtonClick" disabled="@(UnableToAddBreakpoint())">
 			Add Breakpoint
@@ -56,12 +57,12 @@
 		</button>
 	</div>
 	<div></div>
-	<div></div>
 	<div>
 		<button class="common-button" @onclick="GameModeButtonClick">
 			@GameModeButtonText()
 		</button>
 	</div>
+	<div></div>
 	@foreach (NumberedButton btn in NumberedButtons)
 	{
 		<div>
