@@ -32,6 +32,7 @@ namespace Sudoku.Components
 
         [CascadingParameter(Name = "Number Entry Mode")]
         private bool NumberEntryMode { get; set; }
+
         // constructors
 
         protected override void OnInitialized()
