@@ -1,0 +1,76 @@
+﻿@inherits ComponentBase
+@inject IJSRuntime JsRuntime
+
+<div class="button-grid">
+	<div>
+		<button class="common-button" @onclick="ClearButtonClick">
+			Clear
+		</button>
+	</div>
+	<div>
+		<button class="common-button" disabled="@((_undoStack.Count==0) && (_redoStack.Count==0))" @onclick="ResetButtonClick">
+			Reset
+		</button>
+	</div>
+	<div>
+		<div class="undo-redo-grid">
+			<button class="common-button undo-redo-button" disabled="@(_undoStack.Count == 0)" @onclick="UndoButtonClick">
+				Undo
+			</button>
+		</div>
+		<div>
+			<button class="common-button undo-redo-button" disabled="@(_redoStack.Count == 0)" @onclick="RedoButtonClick">
+				Redo
+			</button>
+		</div>
+	</div>
+	<div></div>
+	<div>
+		<button class="common-button" @onclick="AddBreakpointButtonClick" disabled="@(UnableToAddBreakpoint())">
+			Add Breakpoint
+		</button>
+	</div>
+	<div>Active: @(_breakpoints.Count == 0? "none" : _breakpoints[_breakpoints.Count-1])</div>
+	<div>
+		<button class="common-button" @onclick="ReturnToBreakpointButtonClick" disabled="@(UnableToReturnToBreakpoint())">
+			Back to Breakpoint @(_breakpoints.Count == 0? "" : _breakpoints.Count)
+		</button>
+	</div>
+	<div></div>
+	<div>
+		<button class="common-button" @onclick="SaveGameButtonClick" disabled="@(_undoStack.Count == 0)">
+			Save Game
+		</button>
+	</div>
+	<div>
+		<InputSelect @bind-Value="_selectedSavedGameId" @bind-Value:after="HandleGameSelection">
+			<option value="-1">Load a Saved Game</option>
+			@foreach (SavedGame game in SavedGames)
+			{
+				<option value="@game.Id">@game.Title</option>
+			}
+		</InputSelect>
+	</div>
+	<div>
+		<button class="common-button" @onclick="ClearSavedGamesButtonClick" disabled="@(SavedGames.Count == 0)">
+			Clear Saved Games
+		</button>
+	</div>
+	<div></div>
+	<div>
+		<button class="common-button" @onclick="GameModeButtonClick">
+			@GameModeButtonText()
+		</button>
+	</div>
+	<div></div>
+	@foreach (NumberedButton btn in NumberedButtons)
+	{
+		<div>
+			<button class="@NumberedButtonClassString(btn.Id)" disabled="@NumberedButtons[btn.Id].IsDisabled" @onclick="(() => NumberedButtonClick(btn.Id))">
+				@(btn.Id + 1)
+			</button>
+		</div>
+	}
+
+</div>
+

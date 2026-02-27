@@ -1,0 +1,12 @@
+﻿.sudoku-board {
+    display: grid;
+    grid-template-columns: repeat(3,25%);
+    grid-template-rows: repeat(3,25%);
+    aspect-ratio: 1 / 1;
+}
+
+.heading-line {
+    display: flex;
+    justify-content: space-between; 
+    width: 65%; 
+}

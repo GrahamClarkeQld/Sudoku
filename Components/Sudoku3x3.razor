@@ -1,0 +1,67 @@
+﻿@inherits ComponentBase
+
+<div class="grid3x3 @(IsShown ? "front" : "back hidden")">
+    @for (int cellIdx = 0; cellIdx < 9; cellIdx++)
+    {
+        int idx = cellIdx;
+        <CandidateCell @ref="NewCell" Tag=idx OnChildClick="ChildCellClick"/>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int Tag { get; set; } = -1;
+
+    [Parameter]
+    public bool IsShown { get; set; } = false;
+
+    public List<CandidateCell> Cells = new List<CandidateCell>();
+    public CandidateCell NewCell { set => Cells.Add(value); }
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    private async Task ChildCellClick(int childTag)
+    {
+        await OnChildClick.InvokeAsync(Tag);
+    }
+
+    [Parameter]
+    public EventCallback<int> OnChildClick { get; set; }
+
+    public void Reset()
+    {
+        foreach (CandidateCell cell in Cells)
+            if (cell.IsCandidateSet)
+                cell.Toggle();
+    }
+
+}
+
+<style>
+    .grid3x3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* Three equal columns */
+        grid-template-rows: repeat(3, 1fr); /* Three equal columns */
+        flex-flow: row;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        position: absolute;
+    }
+
+    .front {
+        z-index: 1;
+    }
+
+    .back {
+        z-index: 2;
+    }
+
+    .hidden {
+        display: none;
+    }
+</style>
+

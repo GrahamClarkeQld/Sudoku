@@ -1,0 +1,20 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <main>
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+@code {
+}
+
+<style>
+    .top-row-container {
+        display: flex;
+        justify-content: flex-start; /* Aligns items to the left (default behavior) */
+        align-items: flex-start;    /* Aligns items to the top vertically */
+    }
+</style>

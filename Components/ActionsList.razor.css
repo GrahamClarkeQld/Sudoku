@@ -1,0 +1,107 @@
+﻿.common-button {
+    border: 1px solid #45a049; /* Solid border */
+    color: black; /* White text color */
+    font-size: 16px; /* Optional: change the size */
+    padding: 5px 20px; /* Space between text and border */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline for links used as buttons */
+    display: inline-block; /* Proper display for styling */
+    margin: 4px 2px; /* Space around the button */
+    cursor: pointer; /* Change mouse cursor to a hand */
+    border-radius: 8px; /* Rounded corners */
+    transition-duration: 0.4s; /* Smooth transition for hover */
+    height: 50px;
+    width: 200px;
+    background-color: lightgray;
+    box-shadow: none; /* Add subtle shadow */
+}
+
+    .common-button:hover {
+        background-color: gray;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Add subtle shadow */
+    }
+
+    .common-button:disabled {
+        font-weight: lighter;
+        box-shadow: none;
+        border: none;
+        color: gray;
+        background-color: lightgray;
+    }
+
+.button-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(12, 1fr);
+    grid-auto-flow: column;
+    width: 100%;
+}
+
+    .button-grid div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+.select-dropdown {
+    min-width: 200px;
+    width: auto;
+}
+
+.select-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+
+.undo-redo-button {
+    width: 100px;
+}
+
+.undo-redo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.numbered-button {
+    border: 1px solid #45a049; /* Solid border */
+    color: black; /* White text color */
+    font-size: 24px; /* Optional: change the size */
+    font-weight: bold; /* Optional: change the weight/style */
+    padding: 5px 20px; /* Space between text and border */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline for links used as buttons */
+    display: inline-block; /* Proper display for styling */
+    margin: 4px 2px; /* Space around the button */
+    cursor: pointer; /* Change mouse cursor to a hand */
+    border-radius: 8px; /* Rounded corners */
+    transition-duration: 0.4s; /* Smooth transition for hover */
+    height: 50px;
+    width: 100px;
+    background-color: lightgray;
+    box-shadow: none; /* Add subtle shadow */
+}
+
+.numberered-button:hover {
+    background-color: gray;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Add subtle shadow */
+}
+
+.numbered-button-selected {
+    background-color: gray;
+    color: white;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Add subtle shadow */
+}
+
+
+.numbered-button:disabled {
+    font-weight: lighter;
+    box-shadow: none;
+    border: none;
+    color: gray;
+    background-color: lightgray;
+}
+
+
+
+

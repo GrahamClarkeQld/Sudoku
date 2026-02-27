@@ -1,0 +1,42 @@
+﻿@inherits ComponentBase
+
+<div class="candidate-cell" @onclick="HandleClick">
+	@(@IsCandidateSet? @_value : "")
+</div>
+
+@code {
+	public bool IsCandidateSet { get; set; } = false;
+	public void Toggle()
+	{
+		IsCandidateSet = !IsCandidateSet;	
+	}
+
+	[Parameter]
+	public int Tag { get; set; }
+	private int _value = 0;
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+		_value = Tag + 1;
+		IsCandidateSet = false;
+	}
+
+	[Parameter]
+	public EventCallback<int> OnChildClick { get; set; }
+
+	private async Task HandleClick()
+	{
+		await OnChildClick.InvokeAsync(Tag);
+	}
+
+}
+
+<style>
+	.candidate-cell {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 16px;
+	}
+</style>

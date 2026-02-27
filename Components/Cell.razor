@@ -1,0 +1,67 @@
+﻿@inherits ComponentBase
+
+<div class="sudoku-cell @(IsShown? "front" : "back hidden")" style="color: @TextColor()" @onclick="HandleClick">
+	@_value
+</div>
+
+@code {
+	private int _value = 0;
+
+	[Parameter]
+	public int Tag { get; set; }
+
+	[Parameter]
+	public bool IsShown { get; set; } = true;
+
+	[Parameter]
+	public string? BackgroundColor { get; set; }
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+		_value = 0;
+	}
+
+	[Parameter]
+	public EventCallback<int> OnChildClick { get; set; }
+
+	private async Task HandleClick()
+	{
+		await OnChildClick.InvokeAsync(Tag);
+	}
+
+	private string? TextColor()
+	{
+		return ((_value == 0) ? BackgroundColor : "Black");
+	}
+
+	public void SetValue(int number)
+	{
+		_value = number;
+		IsShown = (_value != 0);
+	}
+}
+
+<style>
+	.sudoku-cell {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 36px;
+		position: absolute;
+	}
+
+	.front {
+		z-index: 1;
+	}
+
+	.back {
+		z-index: 2;
+	}
+
+	.hidden {
+		display: none;
+	}
+
+</style>
+

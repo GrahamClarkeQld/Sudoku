@@ -1,0 +1,84 @@
+﻿@inherits ComponentBase
+
+<div class="sudoku-grid" style="background-color: @BackgroundColor">
+    @for (int cellIdx = 0; cellIdx < 9; cellIdx++)
+    {
+        int idx = cellIdx;
+        <CandidateGrid @ref="_newGrid" Tag=@idx OnChildClick="ChildCellClick" BackgroundColor=@BackgroundColor/>;
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int Tag { get; set; } = -1;
+
+    [Parameter]
+    public string? BackgroundColor { get; set; }
+
+    private List<CandidateGrid> _grids = new();
+    private CandidateGrid _newGrid { set => _grids.Add(value); }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    public bool IsCandidateSet(int cellArg, int number)
+    {
+        return ChildGrid(cellArg).IsCandidateSet(number);    
+    }
+
+    public void ToggleCandidate(int cellArg, int number)
+    {
+        ChildGrid(cellArg).Toggle(number);    
+    }
+
+    private async Task ChildCellClick(int cellArg)
+    {
+        await SetSelectedCellRequest.InvokeAsync((Tag, cellArg));
+    }
+
+    public void Reset()
+    {
+        foreach (CandidateGrid grid in _grids)
+            grid.Reset();
+    }
+
+    [Parameter]
+    public EventCallback<(int,int)> SetSelectedCellRequest { get; set; }
+
+    private CandidateGrid ChildGrid(int cellArg)
+    {
+        return _grids.ElementAt(cellArg);
+
+    }
+    public void SetBorder(int gridArg, bool turnOn)
+    {
+        ChildGrid(gridArg).SetBorder(turnOn);
+    }
+
+    public int Value(int gridArg)
+    {
+        return ChildGrid(gridArg).GetValue();
+    }
+
+    public void SetValue(int gridArg,int number)
+    {
+        ChildGrid(gridArg).SetValue(number);
+    }
+
+    public bool IsEmpty(int cellArg)
+    {
+        return ChildGrid(cellArg).IsEmpty();    
+    }
+}
+
+<style>
+    .sudoku-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* Three equal columns */
+        grid-template-rows: repeat(3, 1fr); /* Three equal columns */
+        flex-flow: row;
+        aspect-ratio: 1 / 1;
+    }
+</style>

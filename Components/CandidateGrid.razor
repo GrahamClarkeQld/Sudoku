@@ -1,0 +1,96 @@
+﻿@inherits ComponentBase
+
+<div class="candidate-container @(IsSelected ? "selected-cell" : "unselected-cell")" >
+	<Cell @ref="_numberCell" Tag=@Tag OnChildClick="ChildCellClick" IsShown=@(_value != 0) />
+	<Sudoku3x3 Tag=@Tag @ref="_candidates" OnChildClick="ChildCellClick" IsShown=@(_value == 0 ) />
+</div>
+
+@code {
+	[Parameter]
+	public int Tag { get; set; }
+
+	private int _value = 0;
+
+	public void SetValue(int number)
+	{
+		_value = number;
+		_numberCell.SetValue(number);
+	}
+
+	public int GetValue()
+	{
+		return _value;
+	}
+
+	[Parameter]
+	public string BackgroundColor { get; set; }
+
+	public bool IsSelected = false;
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+	}
+
+	private Cell _numberCell;
+	private Sudoku3x3 _candidates;
+
+	private async Task ChildCellClick(int childTag)
+	{
+		await OnChildClick.InvokeAsync(Tag);
+	}
+
+	[Parameter]
+	public EventCallback<int> OnChildClick { get; set; }
+
+	public bool IsCandidateSet(int number)
+	{
+		return (_candidates.Cells[number-1].IsCandidateSet);	
+	}
+
+	public bool IsEmpty()
+	{
+		if (_value != 0)
+			return false;
+
+		for (int cellIdx = 0; cellIdx < 9; cellIdx++)
+			if (IsCandidateSet(cellIdx))
+				return false;
+
+		return true;
+	}
+
+	public void Toggle(int number)
+	{
+		_candidates.Cells[number - 1].Toggle();
+	}
+
+	public void SetBorder(bool isSelected)
+	{
+		IsSelected = isSelected;	
+	}
+
+	public void Reset()
+	{
+		SetValue(0);
+		_candidates.Reset();
+	}
+}
+
+<style>
+	.candidate-container {
+		display: flex;
+		align-items: center;
+		justify-content:center;
+		position: relative;
+	}
+
+	.selected-cell {
+		border: solid 2px Black;
+	}
+
+	.unselected-cell {
+		border: solid 1px Gray;
+	}
+
+</style>
