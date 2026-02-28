@@ -8,10 +8,10 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>1.0.0.1</Version>
+    <Version>1.1.0.0</Version>
     <AssemblyInformationalVersion>1.0.0-beta</AssemblyInformationalVersion>
-  </PropertyGroup>  
-  
+  </PropertyGroup>
+   
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.12" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.12" PrivateAssets="all" />
