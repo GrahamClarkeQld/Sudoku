@@ -4,6 +4,7 @@ using System;
 using System.Runtime.CompilerServices;
 using static System.Reflection.Metadata.BlobBuilder;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Reflection;
 
 namespace Sudoku.Components
 {
@@ -15,6 +16,8 @@ namespace Sudoku.Components
         private int _activeButton = -1;
         private string _currentTitle = "no name";
         private ActionsList _actions = new();
+        private string _currentAppVersion = "";
+
         private List<SudokuGrid> _grids = new List<SudokuGrid>();
         private SudokuGrid NewGrid { set => _grids.Add(value); }
 
@@ -39,10 +42,18 @@ namespace Sudoku.Components
                 NumberedButtons.Add(new NumberedButton(idx));
             SelectedCell = -1;
             SelectedGrid = -1;
+            _currentAppVersion = GetAppVersion();
             await LoadSettings();
         }
 
         // setup
+
+        public string GetAppVersion()
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            Version? version = assembly.GetName().Version;
+            return version.ToString();
+        }
 
         private async Task LoadSettings()
         {
