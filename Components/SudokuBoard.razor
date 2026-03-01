@@ -5,8 +5,9 @@
 <CascadingValue Value="@SavedGames" Name="Saved Games">
 <CascadingValue Value="@NumberedButtons" Name="Numbered Buttons">
 <CascadingValue Value="@NumberEntryMode" Name="Number Entry Mode">
+<CascadingValue Value="@CurrentTitle" Name="Current Title">
 	<div class="heading-line">
-		<span><h5>Sudoku: @_currentTitle </h5></span>
+		<span><h5>Sudoku: @CurrentTitle </h5></span>
 		<span><h5>Game mode: Entering  @(NumberEntryMode ? "Numbers" : "Candidates")</h5></span>
 		<span>Version: @_currentAppVersion</span>
 	</div>	
@@ -30,6 +31,7 @@
 			}
 		</div>
 	</div>
+</CascadingValue>
 </CascadingValue>
 </CascadingValue>
 </CascadingValue>

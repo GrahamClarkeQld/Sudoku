@@ -1,9 +1,7 @@
 ﻿.sudoku-board {
     display: grid;
     aspect-ratio: 1 / 1;
-    max-height: 100%;
     grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
-    grid-template-rows: repeat(3, 1fr); /* 3 equal rows */
     width: 60%;
 }
 

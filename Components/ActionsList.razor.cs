@@ -33,6 +33,9 @@ namespace Sudoku.Components
         [CascadingParameter(Name = "Number Entry Mode")]
         private bool NumberEntryMode { get; set; }
 
+        [CascadingParameter(Name = "Current Title")]
+        private string CurrentTitle { get; set; }
+
         // constructors
 
         protected override void OnInitialized()
@@ -113,7 +116,7 @@ namespace Sudoku.Components
 
         private async Task SaveGameButtonClick()
         {
-            string title = await JsRuntime.InvokeAsync<string>("prompt", "Please enter the game's Title:", "");
+            string title = await JsRuntime.InvokeAsync<string>("prompt", "Please enter the game's Title:", CurrentTitle);
             if (title != "")
             {
                 await SaveGameRequest.InvokeAsync(title);

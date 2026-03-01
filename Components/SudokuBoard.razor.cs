@@ -14,7 +14,6 @@ namespace Sudoku.Components
 
         private int[,] _values = new int[9, 9];
         private int _activeButton = -1;
-        private string _currentTitle = "no name";
         private ActionsList _actions = new();
         private string _currentAppVersion = "";
 
@@ -26,6 +25,7 @@ namespace Sudoku.Components
         public List<SavedGame> SavedGames = new();
         public List<NumberedButton> NumberedButtons = new();
         public bool NumberEntryMode = true;
+        public string CurrentTitle = "no name";
 
 
         // properties ---------------------------------------------------------------------------
@@ -124,7 +124,7 @@ namespace Sudoku.Components
                 Console.WriteLine($"SavedGame {game.Id}: {game.Title} = {game.GameString}");
                 if (game.Id == gameId)
                 {
-                    _currentTitle = game.Title;
+                    CurrentTitle = game.Title;
                     Console.WriteLine($"Matched game: {game.Id} {game.Title} = {game.GameString} (len {game.GameString.Length})");
                     for (int idx = 0; idx < game.GameString.Length; idx += 3)
                     {
@@ -163,7 +163,7 @@ namespace Sudoku.Components
         private async Task SaveGameRequest(string title)
         {
             Console.WriteLine($"SaveGameRequest: {title}");
-            if (_currentTitle == title)
+            if (CurrentTitle == title)
             { 
                 bool okToOverwrite = await JsRuntime.InvokeAsync<bool>("confirm", $"Do you want to overwrite saved game '{title}'?");
                 if (okToOverwrite)
@@ -171,8 +171,8 @@ namespace Sudoku.Components
                 else
                     return;
             }
-            _currentTitle = title;
-            SavedGames.Add(new SavedGame(SavedGames.Count + 1, _currentTitle, this.ToString()));
+            CurrentTitle = title;
+            SavedGames.Add(new SavedGame(SavedGames.Count + 1, CurrentTitle, this.ToString()));
             await SaveSettings();
         }
 
@@ -306,7 +306,7 @@ namespace Sudoku.Components
                     return;
             await JsRuntime.InvokeVoidAsync("alert", "Congratulations! You have completed the game.");
 
-            if (_currentTitle != "")
+            if (CurrentTitle != "")
                 RemoveCurrentSavedGame();
         }
 
