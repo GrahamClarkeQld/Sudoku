@@ -8,7 +8,7 @@
 .heading-line {
     display: flex;
     justify-content: space-between; 
-    width: 70%; 
+    width: 100%; 
 }
 
 .parent-grid {
