@@ -1,8 +1,8 @@
 ﻿.sudoku-board {
     display: grid;
     aspect-ratio: 1 / 1;
-    grid-template-columns: repeat(3, 200px); /* 3 equal columns */
-    grid-template-rows: repeat(3,200px);
+    grid-template-columns: repeat(3, 225px); /* 3 equal columns */
+    grid-template-rows: repeat(3,225px);
 }
 
 .heading-line {
@@ -13,8 +13,8 @@
 
 .parent-grid {
     display: grid;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 10% 40% 10% 10%;
     gap: 10px;
-    overflow-y: hidden;
-    max-height: 90vh;
+    align-content: start;
+    overflow: hidden;
 }

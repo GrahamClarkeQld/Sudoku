@@ -22,11 +22,7 @@ namespace Sudoku.Components
 
         // cascading parameters -----------------------------------------------------------------------
 
-        public List<SavedGame> SavedGames = new();
-        public List<NumberedButton> NumberedButtons = new();
-        public bool NumberEntryMode = true;
-        public string CurrentTitle = "no name";
-
+        public SharedData CommonData = new();
 
         // properties ---------------------------------------------------------------------------
 
@@ -39,7 +35,7 @@ namespace Sudoku.Components
         {
             await base.OnInitializedAsync();
             for (int idx = 0; idx < 9; idx++)
-                NumberedButtons.Add(new NumberedButton(idx));
+                CommonData.NumberedButtons.Add(new NumberedButton(idx));
             SelectedCell = -1;
             SelectedGrid = -1;
             _currentAppVersion = GetAppVersion();
@@ -61,7 +57,7 @@ namespace Sudoku.Components
             foreach (string setting in settingsList)
             {
                 string[] args = setting.Split(':');
-                SavedGames.Add(new SavedGame(SavedGames.Count+1, args[0], args[1]));
+                CommonData.SavedGames.Add(new SavedGame(CommonData.SavedGames.Count+1, args[0], args[1]));
             }
         }
 
@@ -83,7 +79,7 @@ namespace Sudoku.Components
             if (action.NumberWasEntered)
             {
                 if (actionToApply.OldValue != 0)
-                    NumberedButtons[actionToApply.OldValue - 1].Usage--;
+                    CommonData.NumberedButtons[actionToApply.OldValue - 1].Usage--;
                 await SetNumber(actionToApply);
             }
             else
@@ -99,32 +95,32 @@ namespace Sudoku.Components
 
             if (ChildGrid(SelectedGrid).Value(SelectedCell) != 0)
             {
-                NumberedButtons[_values[SelectedGrid, SelectedCell]].Usage--;
+                CommonData.NumberedButtons[_values[SelectedGrid, SelectedCell]].Usage--;
                 await AddMove(new SudokuMove(SelectedGrid, SelectedCell, true, 0, _values[SelectedGrid, SelectedCell]));
             }
         }
 
         private async Task ClearSavedGamesRequest()
         {
-            SavedGames.Clear();
+            CommonData.SavedGames.Clear();
             await SaveSettings();
         }
 
         private void GameModeChangeRequest()
         {
-            NumberEntryMode = !NumberEntryMode;
+            CommonData.NumberEntryMode = !CommonData.NumberEntryMode;
         }
 
         private async Task LoadGameRequest(int gameId)
         {
             Console.WriteLine($"LoadGameRequest Id={gameId}");
             ResetGameRequest();
-            foreach (SavedGame game in SavedGames)
+            foreach (SavedGame game in CommonData.SavedGames)
             {
                 Console.WriteLine($"SavedGame {game.Id}: {game.Title} = {game.GameString}");
                 if (game.Id == gameId)
                 {
-                    CurrentTitle = game.Title;
+                    CommonData.CurrentTitle = game.Title;
                     Console.WriteLine($"Matched game: {game.Id} {game.Title} = {game.GameString} (len {game.GameString.Length})");
                     for (int idx = 0; idx < game.GameString.Length; idx += 3)
                     {
@@ -141,15 +137,15 @@ namespace Sudoku.Components
 
         private async Task NumberedButtonClickRequest(int btnId)
         {
-            if (NumberEntryMode)
+            if (CommonData.NumberEntryMode)
             {
                 if ((SelectedGrid == -1) || (SelectedCell == -1))
                     return;
                 if (_values[SelectedGrid, SelectedCell] != 0)
                     return;
-                if (IsValidMove(SelectedGrid, SelectedCell, NumberedButtons[btnId].Number))
+                if (IsValidMove(SelectedGrid, SelectedCell, CommonData.NumberedButtons[btnId].Number))
                 {
-                    SudokuMove move = new(SelectedGrid, SelectedCell, true, NumberedButtons[btnId].Number, 0);
+                    SudokuMove move = new(SelectedGrid, SelectedCell, true, CommonData.NumberedButtons[btnId].Number, 0);
                     RemoveMatchingCandidates(move);
                     await AddMove(move);
                 }
@@ -163,7 +159,7 @@ namespace Sudoku.Components
         private async Task SaveGameRequest(string title)
         {
             Console.WriteLine($"SaveGameRequest: {title}");
-            if (CurrentTitle == title)
+            if (CommonData.CurrentTitle == title)
             { 
                 bool okToOverwrite = await JsRuntime.InvokeAsync<bool>("confirm", $"Do you want to overwrite saved game '{title}'?");
                 if (okToOverwrite)
@@ -171,14 +167,14 @@ namespace Sudoku.Components
                 else
                     return;
             }
-            CurrentTitle = title;
-            SavedGames.Add(new SavedGame(SavedGames.Count + 1, CurrentTitle, this.ToString()));
+            CommonData.CurrentTitle = title;
+            CommonData.SavedGames.Add(new SavedGame(CommonData.SavedGames.Count + 1, CommonData.CurrentTitle, this.ToString()));
             await SaveSettings();
         }
 
         private void ResetGameRequest()
         {
-            foreach (NumberedButton btn in NumberedButtons)
+            foreach (NumberedButton btn in CommonData.NumberedButtons)
                 btn.Reset();
             for (int gridIdx = 0; gridIdx < 9; gridIdx++)
                 for (int cellIdx = 0; cellIdx < 9; cellIdx++)
@@ -191,12 +187,12 @@ namespace Sudoku.Components
         {
             SetSelectedCell(args.Item1, args.Item2);
 
-            if ((!NumberEntryMode) && (_activeButton > -1)
+            if ((!CommonData.NumberEntryMode) && (_activeButton > -1)
             && (_values[SelectedGrid, SelectedCell] == 0)
-            && IsValidMove(SelectedGrid, SelectedCell, NumberedButtons[_activeButton].Number))
+            && IsValidMove(SelectedGrid, SelectedCell, CommonData.NumberedButtons[_activeButton].Number))
             {
-                ChildGrid(SelectedGrid).ToggleCandidate(SelectedCell, NumberedButtons[_activeButton].Number);
-                SudokuMove move = new(SelectedGrid, SelectedCell, false, NumberedButtons[_activeButton].Number, 0);
+                ChildGrid(SelectedGrid).ToggleCandidate(SelectedCell, CommonData.NumberedButtons[_activeButton].Number);
+                SudokuMove move = new(SelectedGrid, SelectedCell, false, CommonData.NumberedButtons[_activeButton].Number, 0);
                 _actions.AddMove(move);
             }
         }
@@ -297,27 +293,27 @@ namespace Sudoku.Components
         private async Task SetNumber(SudokuAction action)
         {
             if (action.NewValue != 0)
-                NumberedButtons[action.NewValue - 1].Usage++;
+                CommonData.NumberedButtons[action.NewValue - 1].Usage++;
             _values[action.GridIndex, action.CellIndex] = action.NewValue;
             ChildGrid(action.GridIndex).SetValue(action.CellIndex, action.NewValue);
 
-            foreach (NumberedButton btn in NumberedButtons)
+            foreach (NumberedButton btn in CommonData.NumberedButtons)
                 if (btn.Usage < 9)
                     return;
             await JsRuntime.InvokeVoidAsync("alert", "Congratulations! You have completed the game.");
 
-            if (CurrentTitle != "")
+            if (CommonData.CurrentTitle != "")
                 RemoveCurrentSavedGame();
         }
 
         private void RemoveCurrentSavedGame()
         {
-            SavedGames.RemoveAll(SavedGame => SavedGame.Title == CurrentTitle);
+            CommonData.SavedGames.RemoveAll(SavedGame => SavedGame.Title == CommonData.CurrentTitle);
         }
         private async Task SaveSettings()
         {
             List<string> settingsList = new();
-            foreach (SavedGame game in SavedGames)
+            foreach (SavedGame game in CommonData.SavedGames)
                 settingsList.Add(game.ToString());
             await SettingsService.SaveStringListAsync(settingsList);
         }

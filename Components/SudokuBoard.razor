@@ -2,26 +2,16 @@
 @inject IJSRuntime JsRuntime
 @inject UserSettingsService SettingsService
 
-<CascadingValue Value="@SavedGames" Name="Saved Games">
-<CascadingValue Value="@NumberedButtons" Name="Numbered Buttons">
-<CascadingValue Value="@NumberEntryMode" Name="Number Entry Mode">
-<CascadingValue Value="@CurrentTitle" Name="Current Title">
-	<div class="heading-line">
-		<span><h5>Sudoku: @CurrentTitle </h5></span>
-		<span><h5>Game mode: Entering  @(NumberEntryMode ? "Numbers" : "Candidates")</h5></span>
-		<span>Version: @_currentAppVersion</span>
-	</div>	
+<CascadingValue Value="@CommonData" Name="Common Data">
 	<div class="parent-grid">
+		<div><h5>Sudoku: @CommonData.CurrentTitle</h5></div>
+		<div><h5>Game mode: Entering  @(CommonData.NumberEntryMode ? "Numbers" : "Candidates")</h5></div>
+		<div>Version: @_currentAppVersion</div>
+		<div></div>
 		<div>
-			<ActionsList @ref="_actions" 
-				ClearCellRequest="ClearCellRequest" 
-				ActionRequest="ActionRequest" 
-				ResetGameRequest="ResetGameRequest"
-				SaveGameRequest="SaveGameRequest"
-				LoadGameRequest="LoadGameRequest"
+			<NumberedButtonsList 
 				GameModeChangeRequest="GameModeChangeRequest"
-				NumberedButtonClickRequest="NumberedButtonClickRequest"
-				ClearSavedGamesRequest="ClearSavedGamesRequest"/>
+				NumberedButtonClickRequest="NumberedButtonClickRequest"/>
 		</div>
 		<div class="sudoku-board">
 			@for (int gridIdx = 0; gridIdx < 9; gridIdx++)
@@ -30,9 +20,15 @@
 				<SudokuGrid @ref="NewGrid" Tag=@idx SetSelectedCellRequest="SetSelectedCellRequest" BackgroundColor="@(idx % 2 == 0 ? "White" : "Gainsboro")" />
 			}
 		</div>
-	</div>
-</CascadingValue>
-</CascadingValue>
-</CascadingValue>
+		<div>
+			<ActionsList @ref="_actions"
+				ClearCellRequest="ClearCellRequest"
+				ActionRequest="ActionRequest"
+				ResetGameRequest="ResetGameRequest"
+				SaveGameRequest="SaveGameRequest"
+				LoadGameRequest="LoadGameRequest"
+				ClearSavedGamesRequest="ClearSavedGamesRequest" />
+			</div>
+		</div>
 </CascadingValue>
 

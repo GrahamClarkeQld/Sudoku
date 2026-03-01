@@ -1,0 +1,99 @@
+﻿@inherits ComponentBase
+
+<div class="button-grid">
+    <div>
+        <button class="numbered-button mode-button" @onclick="GameModeButtonClick">
+            Mode
+        </button>
+    </div>
+    <div></div>
+    @foreach (NumberedButton btn in CommonData.NumberedButtons)
+    {
+        <div>
+            <button class="@NumberedButtonClassString(btn.Id)" disabled="@CommonData.NumberedButtons[btn.Id].IsDisabled" @onclick="(() => NumberedButtonClick(btn.Id))">
+                @(btn.Id + 1)
+            </button>
+        </div>
+    }
+</div>
+
+
+
+@code {
+    private int _activeButton = -1;
+
+    [CascadingParameter(Name = "Common Data")]
+    private SharedData CommonData { get; set; }
+
+    [Parameter]
+    public EventCallback GameModeChangeRequest { get; set; }
+
+    [Parameter]
+    public EventCallback<int> NumberedButtonClickRequest { get; set; }
+
+    private string NumberedButtonClassString(int btnIdx)
+    {
+        return "numbered-button " 
+            + ((CommonData.NumberedButtons[btnIdx].Id == _activeButton) && (CommonData.NumberEntryMode == false) ? "numbered-button-selected" : "");
+    }
+
+
+    private async Task GameModeButtonClick()
+    {
+        await GameModeChangeRequest.InvokeAsync();
+    }
+
+    private async Task NumberedButtonClick(int btn)
+    {
+        _activeButton = btn;
+        await NumberedButtonClickRequest.InvokeAsync(btn);
+    }
+
+}
+
+<style>
+    .numbered-button {
+        border: 1px solid #45a049; /* Solid border */
+        color: black;
+        font-size: 24px; /* Optional: change the size */
+        font-weight: bold; /* Optional: change the weight/style */
+        padding: 5px 20px; /* Space between text and border */
+        text-align: center; /* Center the text */
+        text-decoration: none; /* Remove underline for links used as buttons */
+        display: inline-block; /* Proper display for styling */
+        margin: 4px 2px; /* Space around the button */
+        cursor: pointer; /* Change mouse cursor to a hand */
+        border-radius: 8px; /* Rounded corners */
+        transition-duration: 0.4s; /* Smooth transition for hover */
+        height: 50px;
+        width: 100px;
+        background-color: lightgray;
+        box-shadow: none; /* Add subtle shadow */
+    }
+
+    .numberered-button:hover {
+        background-color: gray;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Add subtle shadow */
+    }
+
+    .numbered-button-selected {
+        background-color: gray;
+        color: white;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Add subtle shadow */
+    }
+
+
+    .numbered-button:disabled {
+        font-weight: lighter;
+        box-shadow: none;
+        border: none;
+        color: gray;
+        background-color: lightgray;
+    }
+
+    .mode-button {
+        font-size: 16px; /* Optional: change the size */
+        font-weight: normal; /* Optional: change the weight/style */
+    }
+
+</style>

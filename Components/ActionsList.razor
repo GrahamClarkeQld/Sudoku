@@ -45,32 +45,16 @@
 	<div>
 		<InputSelect @bind-Value="_selectedSavedGameId" @bind-Value:after="HandleGameSelection">
 			<option value="-1">Load a Saved Game</option>
-			@foreach (SavedGame game in SavedGames)
+			@foreach (SavedGame game in CommonData.SavedGames)
 			{
 				<option value="@game.Id">@game.Title</option>
 			}
 		</InputSelect>
 	</div>
 	<div>
-		<button class="common-button" @onclick="ClearSavedGamesButtonClick" disabled="@(SavedGames.Count == 0)">
+		<button class="common-button" @onclick="ClearSavedGamesButtonClick" disabled="@(CommonData.SavedGames.Count == 0)">
 			Clear Saved Games
 		</button>
 	</div>
-	<div></div>
-	<div>
-		<button class="common-button" @onclick="GameModeButtonClick">
-			@GameModeButtonText()
-		</button>
-	</div>
-	<div></div>
-	@foreach (NumberedButton btn in NumberedButtons)
-	{
-		<div>
-			<button class="@NumberedButtonClassString(btn.Id)" disabled="@NumberedButtons[btn.Id].IsDisabled" @onclick="(() => NumberedButtonClick(btn.Id))">
-				@(btn.Id + 1)
-			</button>
-		</div>
-	}
-
 </div>
 

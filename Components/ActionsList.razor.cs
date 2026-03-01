@@ -20,21 +20,11 @@ namespace Sudoku.Components
         private Stack<SudokuMove> _redoStack = new Stack<SudokuMove>();
         private List<string> _breakpoints = new();
         private int _selectedSavedGameId = -1;
-        private int _activeButton = -1;
 
         // properties
 
-        [CascadingParameter(Name="Saved Games")]
-        private List<SavedGame> SavedGames { get; set; }
-
-        [CascadingParameter(Name = "Numbered Buttons")]
-        private List<NumberedButton> NumberedButtons { get; set; }
-
-        [CascadingParameter(Name = "Number Entry Mode")]
-        private bool NumberEntryMode { get; set; }
-
-        [CascadingParameter(Name = "Current Title")]
-        private string CurrentTitle { get; set; }
+        [CascadingParameter(Name = "Common Data")]
+        private SharedData CommonData { get; set; }
 
         // constructors
 
@@ -64,20 +54,9 @@ namespace Sudoku.Components
             await ClearSavedGamesRequest.InvokeAsync();
         }
 
-        private async Task GameModeButtonClick()
-        {
-            await GameModeChangeRequest.InvokeAsync();
-        }
-
         private async Task HandleGameSelection()
         { 
             await LoadGameRequest.InvokeAsync(_selectedSavedGameId);
-        }
-
-        private async Task NumberedButtonClick(int btn)
-        {
-            _activeButton = btn;
-            await NumberedButtonClickRequest.InvokeAsync(btn);
         }
 
         private async Task RedoButtonClick()
@@ -116,7 +95,7 @@ namespace Sudoku.Components
 
         private async Task SaveGameButtonClick()
         {
-            string title = await JsRuntime.InvokeAsync<string>("prompt", "Please enter the game's Title:", CurrentTitle);
+            string title = await JsRuntime.InvokeAsync<string>("prompt", "Please enter the game's Title:", CommonData.CurrentTitle);
             if (title != "")
             {
                 await SaveGameRequest.InvokeAsync(title);
@@ -140,13 +119,7 @@ namespace Sudoku.Components
         public EventCallback ClearSavedGamesRequest { get; set; }
 
         [Parameter]
-        public EventCallback GameModeChangeRequest { get; set; }
-
-        [Parameter]
         public EventCallback<int> LoadGameRequest { get; set; }
-
-        [Parameter]
-        public EventCallback<int> NumberedButtonClickRequest { get; set; }
 
         [Parameter]
         public EventCallback ResetGameRequest { get; set; }
@@ -155,16 +128,6 @@ namespace Sudoku.Components
         public EventCallback<string> SaveGameRequest { get; set; }
 
         // style
-
-        private string GameModeButtonText()
-        {
-            return (NumberEntryMode ? "==>Candidates" : "==>Numbers");
-        }
-
-        private string NumberedButtonClassString(int btnIdx)
-        {
-            return "numbered-button " + ((NumberedButtons[btnIdx].Id == _activeButton) && (NumberEntryMode == false) ? "numbered-button-selected" : "");
-        }
 
         // methods
 
