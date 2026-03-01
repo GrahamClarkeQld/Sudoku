@@ -312,7 +312,7 @@ namespace Sudoku.Components
 
         private void RemoveCurrentSavedGame()
         {
-            SavedGames.RemoveAll(SavedGame => SavedGame.Title == _currentTitle);
+            SavedGames.RemoveAll(SavedGame => SavedGame.Title == CurrentTitle);
         }
         private async Task SaveSettings()
         {
