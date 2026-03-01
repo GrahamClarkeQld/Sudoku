@@ -1,14 +1,14 @@
 ﻿.sudoku-board {
     display: grid;
     aspect-ratio: 1 / 1;
-    grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
-    width: 60%;
+    grid-template-columns: repeat(3, 200px); /* 3 equal columns */
+    grid-template-rows: repeat(3,200px);
 }
 
 .heading-line {
     display: flex;
     justify-content: space-between; 
-    width: 80%; 
+    width: 100%; 
 }
 
 .parent-grid {
