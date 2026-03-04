@@ -126,3 +126,39 @@ code {
         align-items: center;
         justify-content: center;
     }
+
+.common-button {
+    border: 1px solid #45a049; /* Solid border */
+    color: black; /* White text color */
+    font-size: 16px; /* Optional: change the size */
+    padding: 5px 20px; /* Space between text and border */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline for links used as buttons */
+    display: inline-block; /* Proper display for styling */
+    margin: 4px 2px; /* Space around the button */
+    cursor: pointer; /* Change mouse cursor to a hand */
+    border-radius: 8px; /* Rounded corners */
+    transition-duration: 0.4s; /* Smooth transition for hover */
+    height: 50px;
+    width: 200px;
+    background-color: lightgray;
+    box-shadow: none; /* Add subtle shadow */
+}
+
+    .common-button:hover {
+        background-color: gray;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Add subtle shadow */
+    }
+
+    .common-button:disabled {
+        font-weight: lighter;
+        box-shadow: none;
+        border: none;
+        color: gray;
+        background-color: lightgray;
+    }
+
+.undo-redo-button {
+    width: 100px;
+}
+
