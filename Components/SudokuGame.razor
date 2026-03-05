@@ -33,16 +33,20 @@
 	.sudoku-board {
 		display: grid;
 		aspect-ratio: 1 / 1;
-		grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+		grid-template-columns: repeat(3, 250px); /* 3 equal columns */
 		aspect-ratio: 1 / 1;
-		width: 90%;
 	}
 
 	.parent-grid {
-		display: grid;
-		grid-template-columns: 200px 750px 200px;
+		display: inline-grid;
+		justify-items: start;
+		align-items: start;
+		grid-template-columns: 200px 800px 250px;
 		gap: 10px;
 		overflow: hidden;
 	}
 
+	.parent-table {
+		border-collapse: collapse;
+	}
 </style>
