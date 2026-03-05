@@ -13,7 +13,7 @@
 
 .parent-grid {
     display: grid;
-    grid-template-columns: 200px 700px 200px;
+    grid-template-columns: 200px 600px 200px;
     gap: 10px;
     overflow: hidden;
 }

@@ -4,8 +4,8 @@
 
 <CascadingValue Value="@CommonData" Name="Common Data">
 	<div class="parent-grid">
-		<div><h5>Sudoku: @CommonData.CurrentTitle</h5></div>
-		<div><h5>Game mode: Entering  @(CommonData.NumberEntryMode ? "Numbers" : "Candidates")</h5></div>
+		<div><h5>@CommonData.CurrentTitle</h5></div>
+		<div><h5>Entering  @(CommonData.NumberEntryMode ? "Numbers" : "Candidates")</h5></div>
 		<div>Version: @_currentAppVersion</div>
 		<div>
 			<NumberedButtonsList 
