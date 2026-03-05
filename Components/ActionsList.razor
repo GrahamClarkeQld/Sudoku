@@ -2,6 +2,7 @@
 @inject IJSRuntime JsRuntime
 
 <div class="button-grid">
+	<div><h5>@CommonData.CurrentTitle</h5></div>
 	<div>
 		<button class="common-button" @onclick="ClearButtonClick">
 			Clear
@@ -58,3 +59,22 @@
 	</div>
 </div>
 
+<style>
+	.select-dropdown {
+		min-width: 200px;
+		width: auto;
+	}
+
+	.select-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-rows: 1fr 1fr;
+	}
+
+
+	.undo-redo-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+	}
+
+</style>

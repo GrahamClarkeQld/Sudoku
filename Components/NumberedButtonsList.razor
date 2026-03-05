@@ -1,9 +1,10 @@
 ﻿@inherits ComponentBase
 
 <div class="button-grid">
+    <div><h5>@(CommonData.NumberEntryMode? "Number" : "Candidate") Entry</h5></div>
     <div>
         <button class="numbered-button mode-button" @onclick="GameModeButtonClick">
-            Mode
+            Change Mode
         </button>
     </div>
     <div></div>
@@ -94,6 +95,7 @@
     .mode-button {
         font-size: 16px; /* Optional: change the size */
         font-weight: normal; /* Optional: change the weight/style */
+		width: 150px;
     }
 
 </style>

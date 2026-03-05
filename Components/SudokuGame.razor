@@ -4,9 +4,6 @@
 
 <CascadingValue Value="@CommonData" Name="Common Data">
 	<div class="parent-grid">
-		<div><h5>@CommonData.CurrentTitle</h5></div>
-		<div><h5>Entering  @(CommonData.NumberEntryMode ? "Numbers" : "Candidates")</h5></div>
-		<div>Version: @_currentAppVersion</div>
 		<div>
 			<NumberedButtonsList 
 				GameModeChangeRequest="GameModeChangeRequest"
@@ -18,6 +15,7 @@
 				int idx = gridIdx;
 				<SudokuGrid @ref="NewGrid" Tag=@idx SetSelectedCellRequest="SetSelectedCellRequest" BackgroundColor="@(idx % 2 == 0 ? "White" : "Gainsboro")" />
 			}
+			<div>Version: @CommonData.VersionNumber</div>
 		</div>
 		<div>
 			<ActionsList @ref="_actions"
@@ -31,3 +29,20 @@
 		</div>
 </CascadingValue>
 
+<style>
+	.sudoku-board {
+		display: grid;
+		aspect-ratio: 1 / 1;
+		grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+		aspect-ratio: 1 / 1;
+		width: 90%;
+	}
+
+	.parent-grid {
+		display: grid;
+		grid-template-columns: 200px 750px 200px;
+		gap: 10px;
+		overflow: hidden;
+	}
+
+</style>
