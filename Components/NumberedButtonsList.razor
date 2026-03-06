@@ -1,13 +1,11 @@
 ﻿@inherits ComponentBase
 
-<div class="button-grid">
-    <div><h5>@(CommonData.NumberEntryMode? "Number" : "Candidate") Entry</h5></div>
+<div class="button-grid @(IsShown? "front" : "back hidden")">
     <div>
         <button class="numbered-button mode-button" @onclick="GameModeButtonClick">
             Change Mode
         </button>
     </div>
-    <div></div>
     @foreach (NumberedButton btn in CommonData.NumberedButtons)
     {
         <div>
@@ -22,6 +20,9 @@
 
 @code {
     private int _activeButton = -1;
+
+    [Parameter]
+	public bool IsShown { get; set; } = true;
 
     [CascadingParameter(Name = "Common Data")]
     private SharedData CommonData { get; set; }

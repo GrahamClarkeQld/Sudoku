@@ -59,6 +59,10 @@ namespace Sudoku.Components
 
         // events
 
+        private void ControlPanelButtonClick()
+        {
+            CommonData.NumbersAreActive = !CommonData.NumbersAreActive;
+        }
         
         // callbacks ----------------------------------------------------------------------------------------------------------------
 

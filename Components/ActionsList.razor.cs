@@ -23,6 +23,10 @@ namespace Sudoku.Components
 
         // properties
 
+        [Parameter]
+        public bool IsShown { get; set; }
+
+
         [CascadingParameter(Name = "Common Data")]
         private SharedData CommonData { get; set; }
 

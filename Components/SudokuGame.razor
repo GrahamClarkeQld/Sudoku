@@ -5,9 +5,24 @@
 <CascadingValue Value="@CommonData" Name="Common Data">
 	<div class="parent-grid">
 		<div>
-			<NumberedButtonsList 
+			<div><h5>@CommonData.CurrentTitle</h5></div>
+			<div><h5>@(CommonData.NumberEntryMode ? "Number" : "Candidate") Entry</h5></div>
+			<div>
+				<button class="common-button" @onclick="ControlPanelButtonClick">
+					@(CommonData.NumbersAreActive ? "Actions" : "Numbers")
+				</button>
+			</div>
+
+			<NumberedButtonsList IsShown=@CommonData.NumbersAreActive
 				GameModeChangeRequest="GameModeChangeRequest"
 				NumberedButtonClickRequest="NumberedButtonClickRequest"/>
+			<ActionsList @ref="_actions" IsShown="!CommonData.NumbersAreActive"
+						 ClearCellRequest="ClearCellRequest"
+						 ActionRequest="ActionRequest"
+						 ResetGameRequest="ResetGameRequest"
+						 SaveGameRequest="SaveGameRequest"
+						 LoadGameRequest="LoadGameRequest"
+						 ClearSavedGamesRequest="ClearSavedGamesRequest" />
 		</div>
 		<div class="sudoku-board">
 			@for (int gridIdx = 0; gridIdx < 9; gridIdx++)
@@ -17,16 +32,7 @@
 			}
 			<div>Version: @CommonData.VersionNumber</div>
 		</div>
-		<div>
-			<ActionsList @ref="_actions"
-				ClearCellRequest="ClearCellRequest"
-				ActionRequest="ActionRequest"
-				ResetGameRequest="ResetGameRequest"
-				SaveGameRequest="SaveGameRequest"
-				LoadGameRequest="LoadGameRequest"
-				ClearSavedGamesRequest="ClearSavedGamesRequest" />
-			</div>
-		</div>
+	</div>
 </CascadingValue>
 
 <style>
@@ -41,8 +47,8 @@
 		display: inline-grid;
 		justify-items: start;
 		align-items: start;
-		grid-template-columns: 200px 700px 250px;
-		gap: 10px;
+		grid-template-columns: 220px 700px;
+		gap: 20px;
 		overflow: hidden;
 	}
 

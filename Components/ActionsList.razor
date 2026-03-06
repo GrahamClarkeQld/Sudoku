@@ -1,8 +1,7 @@
 ﻿@inherits ComponentBase
 @inject IJSRuntime JsRuntime
 
-<div class="button-grid">
-	<div><h5>@CommonData.CurrentTitle</h5></div>
+<div class="button-grid @(IsShown? "front" : "back hidden")">
 	<div>
 		<button class="common-button" @onclick="ClearButtonClick">
 			Clear
@@ -25,7 +24,6 @@
 			</button>
 		</div>
 	</div>
-	<div></div>
 	<div>
 		<button class="common-button" @onclick="AddBreakpointButtonClick" disabled="@(UnableToAddBreakpoint())">
 			Add Breakpoint
@@ -37,7 +35,6 @@
 			Back to Breakpoint @(_breakpoints.Count == 0? "" : _breakpoints.Count)
 		</button>
 	</div>
-	<div></div>
 	<div>
 		<button class="common-button" @onclick="SaveGameButtonClick" disabled="@(_undoStack.Count == 0)">
 			Save Game
