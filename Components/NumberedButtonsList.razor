@@ -1,19 +1,21 @@
 ﻿@inherits ComponentBase
 
-<div class="button-grid @(IsShown? "front" : "back hidden")" style="justify-items:center">
+<div class=@(IsShown? "front" : "back hidden") >
     <div>
         <button class="numbered-button mode-button" @onclick="GameModeButtonClick">
             Change Mode
         </button>
     </div>
-    @foreach (NumberedButton btn in CommonData.NumberedButtons)
-    {
-        <div>
-            <button class="@NumberedButtonClassString(btn.Id)" disabled="@CommonData.NumberedButtons[btn.Id].IsDisabled" @onclick="(() => NumberedButtonClick(btn.Id))">
-                @(btn.Id + 1)
-            </button>
-        </div>
-    }
+    <div class="numbered-button-grid">
+        @foreach (NumberedButton btn in CommonData.NumberedButtons)
+        {
+            <div>
+                <button class="@NumberedButtonClassString(btn.Id)" disabled="@CommonData.NumberedButtons[btn.Id].IsDisabled" @onclick="(() => NumberedButtonClick(btn.Id))">
+                    @(btn.Id + 1)
+                </button>
+            </div>
+        }
+    </div>
 </div>
 
 
@@ -54,6 +56,19 @@
 }
 
 <style>
+    .numbered-button-grid {
+        display: inline-grid;
+        grid-template-columns: repeat(3, 1fr); /* Three equal columns */
+        grid-template-rows: repeat(3, 1fr); /* Three equal columns */
+        flex-flow: row;
+        column-gap: 5px;
+        justify-items: start;
+    }
+
+        .numbered-button-grid div {
+            display:
+        }
+
     .numbered-button {
         border: 1px solid #45a049; /* Solid border */
         color: black;
@@ -67,8 +82,8 @@
         cursor: pointer; /* Change mouse cursor to a hand */
         border-radius: 8px; /* Rounded corners */
         transition-duration: 0.4s; /* Smooth transition for hover */
-        height: 50px;
-        width: 100px;
+        height: 55px;
+        width: 55px;
         background-color: lightgray;
         box-shadow: none; /* Add subtle shadow */
     }

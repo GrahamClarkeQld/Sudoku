@@ -35,25 +35,6 @@
 			Back to Breakpoint @(_breakpoints.Count == 0? "" : _breakpoints.Count)
 		</button>
 	</div>
-	<div>
-		<button class="common-button" @onclick="SaveGameButtonClick" disabled="@(_undoStack.Count == 0)">
-			Save Game
-		</button>
-	</div>
-	<div>
-		<InputSelect @bind-Value="_selectedSavedGameId" @bind-Value:after="HandleGameSelection">
-			<option value="-1">Load a Saved Game</option>
-			@foreach (SavedGame game in CommonData.SavedGames)
-			{
-				<option value="@game.Id">@game.Title</option>
-			}
-		</InputSelect>
-	</div>
-	<div>
-		<button class="common-button" @onclick="ClearSavedGamesButtonClick" disabled="@(CommonData.SavedGames.Count == 0)">
-			Clear Saved Games
-		</button>
-	</div>
 </div>
 
 <style>

@@ -53,16 +53,6 @@ namespace Sudoku.Components
             await ClearCellRequest.InvokeAsync();
         }
 
-        private async Task ClearSavedGamesButtonClick()
-        {
-            await ClearSavedGamesRequest.InvokeAsync();
-        }
-
-        private async Task HandleGameSelection()
-        { 
-            await LoadGameRequest.InvokeAsync(_selectedSavedGameId);
-        }
-
         private async Task RedoButtonClick()
         {
 
@@ -97,15 +87,6 @@ namespace Sudoku.Components
             }
         }
 
-        private async Task SaveGameButtonClick()
-        {
-            string title = await JsRuntime.InvokeAsync<string>("prompt", "Please enter the game's Title:", CommonData.CurrentTitle);
-            if (title != "")
-            {
-                await SaveGameRequest.InvokeAsync(title);
-            }
-        }
-
         private async Task UndoButtonClick()
         {
             await ProcessUndo();
@@ -120,16 +101,7 @@ namespace Sudoku.Components
         public EventCallback ClearCellRequest { get; set; }
 
         [Parameter]
-        public EventCallback ClearSavedGamesRequest { get; set; }
-
-        [Parameter]
-        public EventCallback<int> LoadGameRequest { get; set; }
-
-        [Parameter]
         public EventCallback ResetGameRequest { get; set; }
-
-        [Parameter]
-        public EventCallback<string> SaveGameRequest { get; set; }
 
         // style
 
@@ -199,6 +171,7 @@ namespace Sudoku.Components
             {
                 await ProcessUndo();
             }
+            _breakpoints.Clear();
         }
 
         private bool UnableToAddBreakpoint()

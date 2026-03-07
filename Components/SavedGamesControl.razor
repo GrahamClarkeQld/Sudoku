@@ -1,0 +1,71 @@
+﻿@inherits ComponentBase
+@inject IJSRuntime JsRuntime
+
+<div class="button-grid @(IsShown? "front" : "back hidden")">
+	<div>
+		<button class="common-button" @onclick="SaveGameButtonClick" disabled="@(!CommonData.GameHasChanged)">
+			Save Game
+		</button>
+	</div>
+	<div>
+		<InputSelect @bind-Value="_selectedSavedGameId" @bind-Value:after="HandleGameSelection">
+			<option value="-1">Load a Saved Game</option>
+			@foreach (SavedGame game in CommonData.SavedGames)
+			{
+				<option value="@game.Id">@game.Title</option>
+			}
+		</InputSelect>
+	</div>
+	<div>
+		<button class="common-button" @onclick="ClearSavedGamesButtonClick" disabled="@(CommonData.SavedGames.Count == 0)">
+			Clear Saved Games
+		</button>
+	</div>
+</div>
+
+@code {
+
+	[Parameter]
+	public bool IsShown { get; set; } = false;	
+
+	[CascadingParameter(Name = "Common Data")]
+	private SharedData CommonData { get; set; }
+
+	private int _selectedSavedGameId = -1;
+
+	[Parameter]
+	public EventCallback ClearSavedGamesRequest { get; set; }
+
+	[Parameter]
+	public EventCallback<int> LoadGameRequest { get; set; }
+
+	[Parameter]
+	public EventCallback<string> SaveGameRequest { get; set; }
+
+	private async Task ClearSavedGamesButtonClick()
+	{
+		await ClearSavedGamesRequest.InvokeAsync();
+	}
+
+	private async Task HandleGameSelection()
+	{
+		await LoadGameRequest.InvokeAsync(_selectedSavedGameId);
+	}
+
+	private async Task SaveGameButtonClick()
+	{
+		string title = await JsRuntime.InvokeAsync<string>("prompt", "Please enter the game's Title:",
+														   (CommonData.CurrentTitle == "no name") ? "" : CommonData.CurrentTitle);
+		if (title != "")
+		{
+			await SaveGameRequest.InvokeAsync(title);
+		}
+	}
+
+
+}
+
+<style>
+
+</style>
+
