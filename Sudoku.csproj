@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>1.2.3.0</Version>
+    <Version>2026.03.07.1515</Version>
     <AssemblyInformationalVersion>1.0.0-beta</AssemblyInformationalVersion>
   </PropertyGroup>
    
@@ -22,4 +22,7 @@
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="powershell.exe -ExecutionPolicy Unrestricted -NoProfile -NonInteractive -File $(ProjectDir)\post-build.ps1 -ProjectDir $(ProjectDir) -ProjectPath $(ProjectPath)" />
+  </Target>
 </Project>

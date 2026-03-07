@@ -1,6 +1,6 @@
 ﻿@inherits ComponentBase
 
-<div class="button-grid @(IsShown? "front" : "back hidden")">
+<div class="button-grid @(IsShown? "front" : "back hidden")" style="justify-items:center">
     <div>
         <button class="numbered-button mode-button" @onclick="GameModeButtonClick">
             Change Mode
@@ -96,7 +96,7 @@
     .mode-button {
         font-size: 16px; /* Optional: change the size */
         font-weight: normal; /* Optional: change the weight/style */
-		width: 150px;
+		width: 180px;
     }
 
 </style>
