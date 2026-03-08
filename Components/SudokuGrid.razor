@@ -57,6 +57,11 @@
         ChildGrid(gridArg).SetBorder(turnOn);
     }
 
+    public async Task ShowError(int gridArg)
+    {
+        await ChildGrid(gridArg).ShowError();
+	}
+
     public int Value(int gridArg)
     {
         return ChildGrid(gridArg).GetValue();

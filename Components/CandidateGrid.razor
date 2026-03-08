@@ -1,6 +1,6 @@
 ﻿@inherits ComponentBase
 
-<div class="candidate-container @(IsSelected ? "selected-cell" : "unselected-cell")" >
+<div class="candidate-container @GetBorderState()" >
 	<Cell @ref="_numberCell" Tag=@Tag OnChildClick="ChildCellClick" IsShown=@(_value != 0) />
 	<Sudoku3x3 Tag=@Tag @ref="_candidates" OnChildClick="ChildCellClick" IsShown=@(_value == 0 ) />
 </div>
@@ -10,6 +10,8 @@
 	public int Tag { get; set; }
 
 	private int _value = 0;
+	private bool _isSelected = false;
+	private bool _causesError = false;
 
 	public void SetValue(int number)
 	{
@@ -24,8 +26,6 @@
 
 	[Parameter]
 	public string BackgroundColor { get; set; }
-
-	public bool IsSelected = false;
 
 	protected override void OnInitialized()
 	{
@@ -42,6 +42,13 @@
 
 	[Parameter]
 	public EventCallback<int> OnChildClick { get; set; }
+
+	private string GetBorderState()
+	{
+		if (_causesError)
+			return "reason-cannot-set";
+		return _isSelected ? "selected-cell" : "unselected-cell";
+	}
 
 	public bool IsCandidateSet(int number)
 	{
@@ -67,7 +74,14 @@
 
 	public void SetBorder(bool isSelected)
 	{
-		IsSelected = isSelected;	
+		_isSelected = isSelected;	
+	}
+
+	public async Task ShowError()
+	{
+		_causesError = true;
+		await Task.Delay(500);
+		_causesError = false;
 	}
 
 	public void Reset()
@@ -91,6 +105,10 @@
 
 	.unselected-cell {
 		border: solid 1px Gray;
+	}
+
+	.reason-cannot-set {
+		border: solid 3px Red;
 	}
 
 </style>

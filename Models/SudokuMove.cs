@@ -13,6 +13,11 @@
             IsBreakpoint = false;
         }
 
+        public SudokuMove()
+        { 
+            IsBreakpoint = false;
+        }
+
         public void AddAction(SudokuAction action)
         { Actions.Add(action); }
 

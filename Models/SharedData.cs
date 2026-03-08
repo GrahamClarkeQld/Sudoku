@@ -7,6 +7,7 @@
         public bool NumberEntryMode = true;
         public bool NumbersAreActive = true;
         public bool GameHasChanged = false;
+        public bool CurrentCellIsEmpty = true;
         public string CurrentTitle = "no name";
         public string VersionNumber = "0.0.0.0";
         public int SelectedGrid = -1;

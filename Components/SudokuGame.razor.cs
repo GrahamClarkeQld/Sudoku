@@ -93,7 +93,22 @@ namespace Sudoku.Components
             if ((CommonData.SelectedGrid == -1) || (CommonData.SelectedCell == -1))
                 return;
 
-            if (ChildGrid(CommonData.SelectedGrid).Value(CommonData.SelectedCell) != 0)
+            if (ChildGrid(CommonData.SelectedGrid).Value(CommonData.SelectedCell) == 0)
+            {
+                SudokuMove move = new();
+                bool anyCandidates = false;
+                for (int cellIdx = 0; cellIdx < 9; cellIdx++)
+                    if (ChildGrid(CommonData.SelectedGrid).IsCandidateSet(CommonData.SelectedCell, cellIdx + 1))
+                    {
+                        if (!anyCandidates)
+                            anyCandidates = true;
+                        ChildGrid(CommonData.SelectedGrid).ToggleCandidate(CommonData.SelectedCell, cellIdx + 1);
+                        move.AddAction(new SudokuAction(CommonData.SelectedGrid, CommonData.SelectedCell, false, 0, cellIdx + 1));
+                    }   
+                if (anyCandidates)
+                    await AddMove(move);
+            }
+            else
             {
                 CommonData.NumberedButtons[_values[CommonData.SelectedGrid, CommonData.SelectedCell]].Usage--;
                 await AddMove(new SudokuMove(CommonData.SelectedGrid, CommonData.SelectedCell, true, 0, _values[CommonData.SelectedGrid, CommonData.SelectedCell]));
@@ -143,7 +158,7 @@ namespace Sudoku.Components
                     return;
                 if (_values[CommonData.SelectedGrid, CommonData.SelectedCell] != 0)
                     return;
-                if (IsValidMove(CommonData.SelectedGrid, CommonData.SelectedCell, CommonData.NumberedButtons[btnId].Number))
+                if (await IsValidMove(CommonData.SelectedGrid, CommonData.SelectedCell, CommonData.NumberedButtons[btnId].Number))
                 {
                     SudokuMove move = new(CommonData.SelectedGrid, CommonData.SelectedCell, true, CommonData.NumberedButtons[btnId].Number, 0);
                     RemoveMatchingCandidates(move);
@@ -183,13 +198,13 @@ namespace Sudoku.Components
                 grid.Reset();
         }
 
-        private void SetSelectedCellRequest((int gridArg, int cellArg) args)
+        private async Task SetSelectedCellRequest((int gridArg, int cellArg) args)
         {
             SetSelectedCell(args.Item1, args.Item2);
 
             if ((!CommonData.NumberEntryMode) && (_activeButton > -1)
             && (_values[CommonData.SelectedGrid, CommonData.SelectedCell] == 0)
-            && IsValidMove(CommonData.SelectedGrid, CommonData.SelectedCell, CommonData.NumberedButtons[_activeButton].Number))
+            && await IsValidMove(CommonData.SelectedGrid, CommonData.SelectedCell, CommonData.NumberedButtons[_activeButton].Number))
             {
                 ChildGrid(CommonData.SelectedGrid).ToggleCandidate(CommonData.SelectedCell, CommonData.NumberedButtons[_activeButton].Number);
                 SudokuMove move = new(CommonData.SelectedGrid, CommonData.SelectedCell, false, CommonData.NumberedButtons[_activeButton].Number, 0);
@@ -229,13 +244,15 @@ namespace Sudoku.Components
             return _grids.ElementAt(gridArg);
         }
 
-        private bool IsValidMove(int gridArg, int cellArg, int number)
+        private async Task<bool> IsValidMove(int gridArg, int cellArg, int number)
         {
             for (int cellIdx = 0; cellIdx < 9; cellIdx++)
                 if (cellArg != cellIdx)
                     if (_values[gridArg, cellIdx] == number)
+                    {
+                        await ChildGrid(gridArg).ShowError(cellIdx);
                         return false;
-
+                    }
             int newCol = -1;
             int newRow = -1;
             OverallPosition(gridArg, cellArg, ref newRow, ref newCol);
@@ -249,7 +266,10 @@ namespace Sudoku.Components
                         OverallPosition(gridIdx, cellIdx, ref checkRow, ref checkCol);
                         if (((newRow == checkRow) || (newCol == checkCol))
                         && (_values[gridIdx, cellIdx] == number))
+                        {
+                            await ChildGrid(gridIdx).ShowError(cellIdx);
                             return false;
+                        }
                     }
             return true;
         }
