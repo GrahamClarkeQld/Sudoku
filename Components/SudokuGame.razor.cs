@@ -44,7 +44,7 @@ namespace Sudoku.Components
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
             Version? version = assembly.GetName().Version;
-            return version.ToString();
+            return $"{assembly.GetCustomAttributes(false).OfType<AssemblyTitleAttribute>().FirstOrDefault().Title}";
         }
 
         private async Task LoadSettings()
