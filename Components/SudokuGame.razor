@@ -30,7 +30,10 @@
 				int idx = gridIdx;
 				<SudokuGrid @ref="NewGrid" Tag=@idx SetSelectedCellRequest="SetSelectedCellRequest" BackgroundColor="@(idx % 2 == 0 ? "White" : "Gainsboro")" />
 			}
-			<div>Version: @CommonData.VersionNumber</div>
+			<div class="footer-line">
+				<span>Sudoku v: @CommonData.VersionNumber</span>
+				<span>Copyright &copy; Graham Clarke 2026</span>
+			</div>
 		</div>
 	</div>
 </CascadingValue>
@@ -61,5 +64,10 @@
 		background-color: transparent;
 	}
 
-
+	.footer-line {
+		grid-column: span 3;
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+	}
 </style>

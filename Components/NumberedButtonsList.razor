@@ -3,7 +3,7 @@
 <div class=@(IsShown? "front" : "back hidden") >
     <div>
         <button class="numbered-button mode-button" @onclick="GameModeButtonClick">
-            Change Mode
+			Enter @(CommonData.NumberEntryMode ? "Candidates" : "Numbers")
         </button>
     </div>
     <div class="numbered-button-grid">
