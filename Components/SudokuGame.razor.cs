@@ -250,7 +250,7 @@ namespace Sudoku.Components
                 if (cellArg != cellIdx)
                     if (_values[gridArg, cellIdx] == number)
                     {
-                        await ChildGrid(gridArg).ShowError(cellIdx);
+                        await ShowError(gridArg, cellArg, gridArg, cellIdx);
                         return false;
                     }
             int newCol = -1;
@@ -267,7 +267,7 @@ namespace Sudoku.Components
                         if (((newRow == checkRow) || (newCol == checkCol))
                         && (_values[gridIdx, cellIdx] == number))
                         {
-                            await ChildGrid(gridIdx).ShowError(cellIdx);
+                            await ShowError(gridArg, cellArg, gridIdx, cellIdx);
                             return false;
                         }
                     }
@@ -342,15 +342,19 @@ namespace Sudoku.Components
 
         private void SetSelectedCell(int gridArg, int cellArg)
         {
-            if ((CommonData.SelectedGrid != -1) && (CommonData.SelectedCell != -1))
-                ChildGrid(CommonData.SelectedGrid).SetBorder(CommonData.SelectedCell, false);
-
             CommonData.SelectedGrid = gridArg;
             CommonData.SelectedCell = cellArg;
-            ChildGrid(CommonData.SelectedGrid).SetBorder(CommonData.SelectedCell, true);
             CommonData.SelectedCellIsEmpty = ChildGrid(CommonData.SelectedGrid).IsEmpty(CommonData.SelectedCell);
         }
 
 
+        private async Task ShowError(int candidateGrid, int candidateCell, int numberedGrid, int numberedCell)
+        {
+            ChildGrid(candidateGrid).ErrorState(candidateCell,true);
+            ChildGrid(numberedGrid).ErrorState(numberedCell, true);
+            await Task.Delay(500);
+            ChildGrid(numberedGrid).ErrorState(numberedCell, false);
+            ChildGrid(candidateGrid).ErrorState(candidateCell, false);
+        }
     } // SudokuBoard class
 }

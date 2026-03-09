@@ -10,8 +10,7 @@
 	public int Tag { get; set; }
 
 	private int _value = 0;
-	private bool _isSelected = false;
-	private bool _causesError = false;
+	private bool _errorState = false;
 
 	public void SetValue(int number)
 	{
@@ -24,8 +23,11 @@
 		return _value;
 	}
 
+	[CascadingParameter(Name = "Common Data")]
+	private SharedData CommonData { get; set; }
+
 	[Parameter]
-	public string BackgroundColor { get; set; }
+	public int ParentGrid { get; set; }
 
 	protected override void OnInitialized()
 	{
@@ -45,9 +47,9 @@
 
 	private string GetBorderState()
 	{
-		if (_causesError)
-			return "reason-cannot-set";
-		return _isSelected ? "selected-cell" : "unselected-cell";
+		if (_errorState)
+			return " reason-cannot-set";
+		return ((CommonData.SelectedGrid == ParentGrid) && (CommonData.SelectedCell == Tag)) ? "selected-cell" : "unselected-cell";
 	}
 
 	public bool IsCandidateSet(int number)
@@ -72,16 +74,9 @@
 		_candidates.Cells[number - 1].Toggle();
 	}
 
-	public void SetBorder(bool isSelected)
+	public void ErrorState(bool setOn)
 	{
-		_isSelected = isSelected;	
-	}
-
-	public async Task ShowError()
-	{
-		_causesError = true;
-		await Task.Delay(500);
-		_causesError = false;
+		_errorState = setOn;
 	}
 
 	public void Reset()

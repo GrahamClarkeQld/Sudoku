@@ -4,7 +4,7 @@
     @for (int cellIdx = 0; cellIdx < 9; cellIdx++)
     {
         int idx = cellIdx;
-        <CandidateGrid @ref="_newGrid" Tag=@idx OnChildClick="ChildCellClick" BackgroundColor=@BackgroundColor/>;
+        <CandidateGrid @ref="_newGrid" Tag=@idx ParentGrid=@Tag OnChildClick="ChildCellClick"/>;
     }
 </div>
 
@@ -52,14 +52,9 @@
         return _grids.ElementAt(cellArg);
 
     }
-    public void SetBorder(int gridArg, bool turnOn)
+    public void ErrorState(int gridArg, bool setOn)
     {
-        ChildGrid(gridArg).SetBorder(turnOn);
-    }
-
-    public async Task ShowError(int gridArg)
-    {
-        await ChildGrid(gridArg).ShowError();
+        ChildGrid(gridArg).ErrorState(setOn);
 	}
 
     public int Value(int gridArg)

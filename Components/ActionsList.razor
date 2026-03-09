@@ -1,7 +1,7 @@
 ﻿@inherits ComponentBase
 @inject IJSRuntime JsRuntime
 
-<div class="button-grid @(IsShown? "front" : "back hidden")">
+<div class="action-grid @(IsShown? "front" : "back hidden")">
 	<div>
 		<button class="common-button" @onclick="ClearButtonClick" disabled="@CommonData.SelectedCellIsEmpty">
 			Clear
@@ -24,15 +24,16 @@
 			</button>
 		</div>
 	</div>
+</div>
+<div class="action-grid @(IsShown? "front" : "back hidden" )">
 	<div>
 		<button class="common-button" @onclick="AddBreakpointButtonClick" disabled="@(UnableToAddBreakpoint())">
 			Add Breakpoint
 		</button>
 	</div>
-	<div>Active: @(_breakpoints.Count == 0? "none" : _breakpoints[_breakpoints.Count-1])</div>
 	<div>
 		<button class="common-button" @onclick="ReturnToBreakpointButtonClick" disabled="@(UnableToReturnToBreakpoint())">
-			Back to Breakpoint @(_breakpoints.Count == 0? "" : _breakpoints.Count)
+			Back to: @(_breakpoints.Count == 0 ? "" : _breakpoints[_breakpoints.Count - 1])
 		</button>
 	</div>
 </div>
@@ -54,5 +55,20 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 	}
+
+	.action-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: repeat(3, 1fr);
+		grid-auto-flow: column;
+		justify-items: start;
+		margin-top: 20px;
+	}
+
+		.action-grid div {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
 
 </style>
