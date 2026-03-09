@@ -7,11 +7,12 @@
         public bool NumberEntryMode = true;
         public bool NumbersAreActive = true;
         public bool GameHasChanged = false;
-        public bool CurrentCellIsEmpty = true;
+        public bool SelectedCellIsEmpty = true;
         public string CurrentTitle = "no name";
         public string VersionNumber = "0.0.0.0";
         public int SelectedGrid = -1;
         public int SelectedCell = -1;
         public int SelectedSavedGameId = -1;
+        public int ActiveButton = -1;
     }
 }

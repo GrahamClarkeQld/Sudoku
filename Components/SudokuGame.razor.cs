@@ -13,7 +13,6 @@ namespace Sudoku.Components
         // locals --------------------------------------------------------------------
 
         private int[,] _values = new int[9, 9];
-        private int _activeButton = -1;
         private ActionsList _actions = new();
 
         private List<SudokuGrid> _grids = new List<SudokuGrid>();
@@ -104,13 +103,13 @@ namespace Sudoku.Components
                             anyCandidates = true;
                         ChildGrid(CommonData.SelectedGrid).ToggleCandidate(CommonData.SelectedCell, cellIdx + 1);
                         move.AddAction(new SudokuAction(CommonData.SelectedGrid, CommonData.SelectedCell, false, 0, cellIdx + 1));
-                    }   
+                    }
                 if (anyCandidates)
                     await AddMove(move);
             }
             else
             {
-                CommonData.NumberedButtons[_values[CommonData.SelectedGrid, CommonData.SelectedCell]].Usage--;
+                CommonData.NumberedButtons[_values[CommonData.SelectedGrid, CommonData.SelectedCell]-1].Usage--;
                 await AddMove(new SudokuMove(CommonData.SelectedGrid, CommonData.SelectedCell, true, 0, _values[CommonData.SelectedGrid, CommonData.SelectedCell]));
             }
         }
@@ -167,7 +166,7 @@ namespace Sudoku.Components
             }
             else
             {
-                _activeButton = btnId;
+                CommonData.ActiveButton = btnId;
             }
         }
 
@@ -202,12 +201,13 @@ namespace Sudoku.Components
         {
             SetSelectedCell(args.Item1, args.Item2);
 
-            if ((!CommonData.NumberEntryMode) && (_activeButton > -1)
+            if ((!CommonData.NumberEntryMode) && (CommonData.ActiveButton > -1)
             && (_values[CommonData.SelectedGrid, CommonData.SelectedCell] == 0)
-            && await IsValidMove(CommonData.SelectedGrid, CommonData.SelectedCell, CommonData.NumberedButtons[_activeButton].Number))
+            && await IsValidMove(CommonData.SelectedGrid, CommonData.SelectedCell, CommonData.NumberedButtons[CommonData.ActiveButton].Number))
             {
-                ChildGrid(CommonData.SelectedGrid).ToggleCandidate(CommonData.SelectedCell, CommonData.NumberedButtons[_activeButton].Number);
-                SudokuMove move = new(CommonData.SelectedGrid, CommonData.SelectedCell, false, CommonData.NumberedButtons[_activeButton].Number, 0);
+                ChildGrid(CommonData.SelectedGrid).ToggleCandidate(CommonData.SelectedCell, CommonData.NumberedButtons[CommonData.ActiveButton].Number);
+                CommonData.SelectedCellIsEmpty = ChildGrid(CommonData.SelectedGrid).IsEmpty(CommonData.SelectedCell);
+                SudokuMove move = new(CommonData.SelectedGrid, CommonData.SelectedCell, false, CommonData.NumberedButtons[CommonData.ActiveButton].Number, 0);
                 _actions.AddMove(move);
             }
         }
@@ -316,6 +316,7 @@ namespace Sudoku.Components
                 CommonData.NumberedButtons[action.NewValue - 1].Usage++;
             _values[action.GridIndex, action.CellIndex] = action.NewValue;
             ChildGrid(action.GridIndex).SetValue(action.CellIndex, action.NewValue);
+            CommonData.SelectedCellIsEmpty = ChildGrid(CommonData.SelectedGrid).IsEmpty(CommonData.SelectedCell);
 
             foreach (NumberedButton btn in CommonData.NumberedButtons)
                 if (btn.Usage < 9)
@@ -347,6 +348,7 @@ namespace Sudoku.Components
             CommonData.SelectedGrid = gridArg;
             CommonData.SelectedCell = cellArg;
             ChildGrid(CommonData.SelectedGrid).SetBorder(CommonData.SelectedCell, true);
+            CommonData.SelectedCellIsEmpty = ChildGrid(CommonData.SelectedGrid).IsEmpty(CommonData.SelectedCell);
         }
 
 

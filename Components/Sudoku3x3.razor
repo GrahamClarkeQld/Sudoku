@@ -39,6 +39,10 @@
                 cell.Toggle();
     }
 
+    public bool IsCandidateSet(int number)
+    {
+        return Cells.ElementAt(number - 1).IsCandidateSet;
+	}   
 }
 
 <style>

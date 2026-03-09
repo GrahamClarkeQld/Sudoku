@@ -21,8 +21,6 @@
 
 
 @code {
-    private int _activeButton = -1;
-
     [Parameter]
 	public bool IsShown { get; set; } = true;
 
@@ -36,9 +34,9 @@
     public EventCallback<int> NumberedButtonClickRequest { get; set; }
 
     private string NumberedButtonClassString(int btnIdx)
-    {
+    {        
         return "numbered-button " 
-            + ((CommonData.NumberedButtons[btnIdx].Id == _activeButton) && (CommonData.NumberEntryMode == false) ? "numbered-button-selected" : "");
+            + ((CommonData.NumberedButtons[btnIdx].Id == CommonData.ActiveButton) && (CommonData.NumberEntryMode == false) ? "numbered-button-selected" : "");
     }
 
 
@@ -49,7 +47,6 @@
 
     private async Task NumberedButtonClick(int btn)
     {
-        _activeButton = btn;
         await NumberedButtonClickRequest.InvokeAsync(btn);
     }
 

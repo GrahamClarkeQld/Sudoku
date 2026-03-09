@@ -52,7 +52,7 @@
 
 	public bool IsCandidateSet(int number)
 	{
-		return (_candidates.Cells[number-1].IsCandidateSet);	
+		return (_candidates.IsCandidateSet(number));
 	}
 
 	public bool IsEmpty()
@@ -60,8 +60,8 @@
 		if (_value != 0)
 			return false;
 
-		for (int cellIdx = 0; cellIdx < 9; cellIdx++)
-			if (IsCandidateSet(cellIdx))
+		for (int number = 1; number < 10; number++)
+			if (IsCandidateSet(number))
 				return false;
 
 		return true;
