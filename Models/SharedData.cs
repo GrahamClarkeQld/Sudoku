@@ -8,7 +8,7 @@
         public bool NumbersAreActive = true;
         public bool GameHasChanged = false;
         public bool SelectedCellIsEmpty = true;
-        public string CurrentTitle = "no name";
+        public string CurrentTitle = "";
         public string VersionNumber = "0.0.0.0";
         public int SelectedGrid = -1;
         public int SelectedCell = -1;

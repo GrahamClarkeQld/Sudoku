@@ -7,7 +7,7 @@
 		<div>
 			<div style="display: inline-grid">
 				<button class="common-button enter-button" @onclick="ControlPanelButtonClick">
-					@(CommonData.NumbersAreActive? CommonData.CurrentTitle: "Return to Game")
+					@GameControlPanelButtonText()
 				</button>
 			</div>
 			<div><h5>@(CommonData.NumberEntryMode ? "Number" : "Candidate") Entry</h5></div>

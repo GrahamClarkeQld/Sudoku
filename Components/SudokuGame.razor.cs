@@ -244,6 +244,16 @@ namespace Sudoku.Components
             return _grids.ElementAt(gridArg);
         }
 
+        private string GameControlPanelButtonText()
+        {
+            if (CommonData.NumbersAreActive)
+                if (CommonData.CurrentTitle == "")
+                    return "Save Game " + ((CommonData.SavedGames.Count != 0)? " or Select Game" : "");
+                else
+                    return CommonData.CurrentTitle;
+                else
+                return "Return to Game";
+        }
         private async Task<bool> IsValidMove(int gridArg, int cellArg, int number)
         {
             for (int cellIdx = 0; cellIdx < 9; cellIdx++)
