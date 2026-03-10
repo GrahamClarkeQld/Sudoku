@@ -1,8 +1,8 @@
 ﻿@inherits ComponentBase
 @inject IJSRuntime JsRuntime
 
-<div class="action-grid @(IsShown? "front" : "back hidden")">
-	<div>
+<div class="@(IsShown? "front" : "back hidden")">
+	<div style="margin-top:20px">
 		<button class="common-button" @onclick="ClearButtonClick" disabled="@CommonData.SelectedCellIsEmpty">
 			Clear
 		</button>
@@ -13,20 +13,14 @@
 		</button>
 	</div>
 	<div>
-		<div class="undo-redo-grid">
-			<button class="common-button undo-redo-button" disabled="@(_undoStack.Count == 0)" @onclick="UndoButtonClick">
-				Undo
-			</button>
-		</div>
-		<div>
-			<button class="common-button undo-redo-button" disabled="@(_redoStack.Count == 0)" @onclick="RedoButtonClick">
-				Redo
-			</button>
-		</div>
+		<button class="common-button undo-redo-button" disabled="@(_undoStack.Count == 0)" @onclick="UndoButtonClick">
+			Undo
+		</button>
+		<button class="common-button undo-redo-button" disabled="@(_redoStack.Count == 0)" @onclick="RedoButtonClick">
+			Redo
+		</button>
 	</div>
-</div>
-<div class="action-grid @(IsShown? "front" : "back hidden" )">
-	<div>
+	<div style="margin-top:20px">
 		<button class="common-button" @onclick="AddBreakpointButtonClick" disabled="@(UnableToAddBreakpoint())">
 			Add Breakpoint
 		</button>
@@ -43,32 +37,5 @@
 		min-width: 200px;
 		width: auto;
 	}
-
-	.select-grid {
-		display: grid;
-		grid-template-columns: 1fr;
-		grid-template-rows: 1fr 1fr;
-	}
-
-
-	.undo-redo-grid {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-	}
-
-	.action-grid {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		grid-template-rows: repeat(3, 1fr);
-		grid-auto-flow: column;
-		justify-items: start;
-		margin-top: 20px;
-	}
-
-		.action-grid div {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
 
 </style>

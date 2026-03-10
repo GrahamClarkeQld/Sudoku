@@ -1,7 +1,7 @@
 ﻿@inherits ComponentBase
 @inject IJSRuntime JsRuntime
 
-<div class="button-grid @(IsShown? "front" : "back hidden")">
+<div class="@(IsShown? "front" : "back hidden")">
 	<div>
 		<button class="common-button" @onclick="SaveGameButtonClick" disabled="@(!CommonData.GameHasChanged)">
 			Save Game

@@ -3,9 +3,9 @@
 @inject UserSettingsService SettingsService
 
 <CascadingValue Value="@CommonData" Name="Common Data">
-	<div class="parent-grid">
-		<div>
-			<div style="display: inline-grid">
+	<div class="parent-container">
+		<div style="width:200px">
+			<div style="display: flex">
 				<button class="common-button enter-button" @onclick="ControlPanelButtonClick">
 					@GameControlPanelButtonText()
 				</button>
@@ -45,17 +45,12 @@
 		grid-template-columns: repeat(3, 220px); /* 3 equal columns */
 	}
 
-	.parent-grid {
-		display: inline-grid;
+	.parent-container {
+		display: flex;
 		justify-items: start;
 		align-items: start;
-		grid-template-columns: 220px 700px;
 		gap: 20px;
 		overflow: hidden;
-	}
-
-	.parent-table {
-		border-collapse: collapse;
 	}
 
 	.enter-button {
