@@ -116,8 +116,11 @@ namespace Sudoku.Components
 
         private async Task ClearSavedGamesRequest()
         {
-            CommonData.SavedGames.Clear();
-            await SaveSettings();
+            if (await JsRuntime.InvokeAsync<bool>("confirm", "Really clear all the saved games?"))
+            {
+                CommonData.SavedGames.Clear();
+                await SaveSettings();
+            }
         }
 
         private void GameModeChangeRequest()
@@ -141,7 +144,7 @@ namespace Sudoku.Components
                         int gridIdx = (int)game.GameString[idx] - 49;
                         int cellIdx = (int)game.GameString[idx + 1] - 49;
                         int number = (int)game.GameString[idx + 2] - 48;
-                        Console.WriteLine($"portion: [{gridIdx},{cellIdx}] = {number}");
+                        SetSelectedCell(gridIdx, cellIdx);
                         await SetNumber(new SudokuAction(gridIdx,cellIdx, true, number, 0));
                     }
                 }
@@ -325,6 +328,9 @@ namespace Sudoku.Components
             foreach (NumberedButton btn in CommonData.NumberedButtons)
                 if (btn.Usage < 9)
                     return;
+
+            StateHasChanged();
+
             await JsRuntime.InvokeVoidAsync("alert", "Congratulations! You have completed the game.");
 
             if (CommonData.CurrentTitle != "")

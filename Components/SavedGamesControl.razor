@@ -8,7 +8,11 @@
 		</button>
 	</div>
 	<div style="margin-top: 25px; margin-bottom: 25px">
-		<InputSelect @bind-Value="_selectedSavedGameId" @bind-Value:after="HandleGameSelection">
+		@*<InputSelect @bind-Value="_selectedSavedGameId" @bind-Value:after="HandleGameSelection">*@
+		<InputSelect TValue="int"
+					 Value="_selectedSavedGameId"
+					 ValueChanged="@((int value) => HandleGameSelection(value))"
+					 ValueExpression="@(() => _selectedSavedGameId)">
 			<option value="-1">Load a Saved Game</option>
 			@foreach (SavedGame game in CommonData.SavedGames)
 			{
@@ -47,9 +51,9 @@
 		await ClearSavedGamesRequest.InvokeAsync();
 	}
 
-	private async Task HandleGameSelection()
+	private async Task HandleGameSelection(int savedGameId)
 	{
-		await LoadGameRequest.InvokeAsync(_selectedSavedGameId);
+		await LoadGameRequest.InvokeAsync(savedGameId);
 	}
 
 	private async Task SaveGameButtonClick()
