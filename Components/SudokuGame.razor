@@ -7,7 +7,22 @@
 		<div style="width:200px">
 			<div style="display: flex">
 				<button class="common-button enter-button" @onclick="ControlPanelButtonClick">
-					@GameControlPanelButtonText()
+					@if (@CommonData.NumbersAreActive)
+					{
+						@if (CommonData.CurrentTitle == "")
+						{
+							<span>Save this Game<br></span>
+							<span>@((CommonData.SavedGames.Count == 0)? "" : "or Select Game")</span>
+						}
+						else
+						{
+							<span>@CommonData.CurrentTitle</span>
+						}
+					}
+					else
+					{
+						<span>Return to Game</span>
+					}
 				</button>
 			</div>
 			<div><h5>@(CommonData.NumberEntryMode ? "Number" : "Candidate") Entry</h5></div>
@@ -57,6 +72,7 @@
 		margin-top: 0px;
 		margin-bottom: 20px;
 		background-color: transparent;
+		height: 55px;
 	}
 
 	.footer-line {

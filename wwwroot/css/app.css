@@ -117,7 +117,7 @@ code {
     border: 1px solid #45a049; /* Solid border */
     color: black; /* White text color */
     font-size: 16px; /* Optional: change the size */
-    padding: 5px 20px; /* Space between text and border */
+    padding: 5px 5px; /* Space between text and border */
     text-align: center; /* Center the text */
     text-decoration: none; /* Remove underline for links used as buttons */
     display: inline-block; /* Proper display for styling */

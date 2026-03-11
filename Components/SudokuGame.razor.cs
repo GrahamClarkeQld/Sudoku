@@ -147,6 +147,8 @@ namespace Sudoku.Components
                 }
             }
             _actions.SetInitialState();
+
+            CommonData.GameHasChanged = false;
         }
 
         private async Task NumberedButtonClickRequest(int btnId)
@@ -195,6 +197,8 @@ namespace Sudoku.Components
                     _values[gridIdx, cellIdx] = 0;
             foreach (SudokuGrid grid in _grids)
                 grid.Reset();
+
+            CommonData.GameHasChanged = false;
         }
 
         private async Task SetSelectedCellRequest((int gridArg, int cellArg) args)
@@ -244,16 +248,6 @@ namespace Sudoku.Components
             return _grids.ElementAt(gridArg);
         }
 
-        private string GameControlPanelButtonText()
-        {
-            if (CommonData.NumbersAreActive)
-                if (CommonData.CurrentTitle == "")
-                    return "Save Game " + ((CommonData.SavedGames.Count != 0)? " or Select Game" : "");
-                else
-                    return CommonData.CurrentTitle;
-                else
-                return "Return to Game";
-        }
         private async Task<bool> IsValidMove(int gridArg, int cellArg, int number)
         {
             for (int cellIdx = 0; cellIdx < 9; cellIdx++)
@@ -327,7 +321,7 @@ namespace Sudoku.Components
             _values[action.GridIndex, action.CellIndex] = action.NewValue;
             ChildGrid(action.GridIndex).SetValue(action.CellIndex, action.NewValue);
             CommonData.SelectedCellIsEmpty = ChildGrid(CommonData.SelectedGrid).IsEmpty(CommonData.SelectedCell);
-
+            CommonData.GameHasChanged = true;
             foreach (NumberedButton btn in CommonData.NumberedButtons)
                 if (btn.Usage < 9)
                     return;

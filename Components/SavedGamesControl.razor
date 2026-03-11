@@ -7,7 +7,7 @@
 			Save Game
 		</button>
 	</div>
-	<div>
+	<div style="margin-top: 25px; margin-bottom: 25px">
 		<InputSelect @bind-Value="_selectedSavedGameId" @bind-Value:after="HandleGameSelection">
 			<option value="-1">Load a Saved Game</option>
 			@foreach (SavedGame game in CommonData.SavedGames)
