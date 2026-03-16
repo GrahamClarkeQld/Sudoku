@@ -4,10 +4,10 @@
 
 <CascadingValue Value="@CommonData" Name="Common Data">
 	<div class="parent-container">
-		<div style="width:200px">
+		<div style="width:220px; height:700px" >
 			<div style="display: flex">
 				<button class="common-button enter-button" @onclick="ControlPanelButtonClick">
-					@if (@CommonData.NumbersAreActive)
+					@if (@CommonData.CurrentControlMode == @SharedData.ControlMode.NumbersEntry)
 					{
 						@if (CommonData.CurrentTitle == "")
 						{
@@ -25,19 +25,19 @@
 					}
 				</button>
 			</div>
-			<div style="text-align: center"><h5>@(CommonData.NumberEntryMode ? "Number" : "Candidate") Entry</h5></div>
 
-			<NumberedButtonsList IsShown=@CommonData.NumbersAreActive
+			<NumberedButtonsList IsShown="@(CommonData.CurrentControlMode == SharedData.ControlMode.NumbersEntry)"
 				GameModeChangeRequest="GameModeChangeRequest"
 				NumberedButtonClickRequest="NumberedButtonClickRequest"/>
-			<ActionsList @ref="_actions" IsShown=@CommonData.NumbersAreActive
+			<ActionsList @ref="_actions" IsShown="@(CommonData.CurrentControlMode == SharedData.ControlMode.NumbersEntry)"
 						 ClearCellRequest="ClearCellRequest"
 						 ActionRequest="ActionRequest"
 						 ResetGameRequest="ResetGameRequest" />
-			<SavedGamesControl IsShown="!CommonData.NumbersAreActive"
+			<SavedGamesControl IsShown="@(CommonData.CurrentControlMode == SharedData.ControlMode.SavedGameControl)"
 						 SaveGameRequest="SaveGameRequest"
 						 LoadGameRequest="LoadGameRequest"
 						 ClearSavedGamesRequest="ClearSavedGamesRequest" />
+			<UserHelp IsShown="@(CommonData.CurrentControlMode == SharedData.ControlMode.UserHelp)" />
 		</div>
 		<div class="sudoku-board">
 			@for (int gridIdx = 0; gridIdx < 9; gridIdx++)
@@ -47,6 +47,11 @@
 			}
 			<div class="footer-line">
 				<span>Sudoku v: @CommonData.VersionNumber</span>
+				<span>
+					<button class="info-button" @onclick="InfoButtonClick">
+						Info
+					</button>
+				</span>
 				<span>Copyright &copy; Graham Clarke 2026</span>
 			</div>
 		</div>
@@ -81,4 +86,13 @@
 		justify-content: space-between;
 		width: 100%;
 	}
+
+	.info-button {
+		border: none;
+		background-color: transparent;
+		color: blue;
+		text-decoration: underline;
+		width: 20px;
+	}
+
 </style>

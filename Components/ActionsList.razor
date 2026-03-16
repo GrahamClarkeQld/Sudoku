@@ -27,7 +27,7 @@
 	</div>
 	<div>
 		<button class="common-button" @onclick="ReturnToBreakpointButtonClick" disabled="@(UnableToReturnToBreakpoint())">
-			Back to: @(_breakpoints.Count == 0 ? "" : _breakpoints[_breakpoints.Count - 1])
+			Back to (@_breakpoints.Count): @(_breakpoints.Count == 0 ? "" : _breakpoints[_breakpoints.Count - 1])
 		</button>
 	</div>
 </div>

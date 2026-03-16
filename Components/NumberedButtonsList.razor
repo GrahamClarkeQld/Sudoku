@@ -1,6 +1,7 @@
 ﻿@inherits ComponentBase
 
 <div class=@(IsShown? "front" : "back hidden") >
+    <div style="text-align: center"><h5>@(CommonData.NumberEntryMode ? "Number" : "Candidate") Entry</h5></div>
     <div>
         <button class="numbered-button mode-button" @onclick="GameModeButtonClick">
 			Enter @(CommonData.NumberEntryMode ? "Candidates" : "Numbers")

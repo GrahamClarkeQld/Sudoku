@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using static System.Reflection.Metadata.BlobBuilder;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Sudoku.Components
 {
@@ -60,7 +61,18 @@ namespace Sudoku.Components
 
         private void ControlPanelButtonClick()
         {
-            CommonData.NumbersAreActive = !CommonData.NumbersAreActive;
+            switch (CommonData.CurrentControlMode)
+            {
+                case SharedData.ControlMode.NumbersEntry:
+                    CommonData.CurrentControlMode = SharedData.ControlMode.SavedGameControl;
+                    break;
+                case SharedData.ControlMode.SavedGameControl:
+                    CommonData.CurrentControlMode = SharedData.ControlMode.NumbersEntry;
+                    break;
+                case SharedData.ControlMode.UserHelp:
+                    CommonData.CurrentControlMode = SharedData.ControlMode.NumbersEntry;
+                    break;
+            }
         }
         
         // callbacks ----------------------------------------------------------------------------------------------------------------
@@ -128,6 +140,12 @@ namespace Sudoku.Components
             CommonData.NumberEntryMode = !CommonData.NumberEntryMode;
         }
 
+        private void InfoButtonClick()
+        {
+            if (CommonData.CurrentControlMode != SharedData.ControlMode.UserHelp)
+                CommonData.CurrentControlMode = SharedData.ControlMode.UserHelp;
+        }
+
         private async Task LoadGameRequest(int gameId)
         {
             Console.WriteLine($"LoadGameRequest Id={gameId}");
@@ -182,7 +200,7 @@ namespace Sudoku.Components
             { 
                 bool okToOverwrite = await JsRuntime.InvokeAsync<bool>("confirm", $"Do you want to overwrite saved game '{title}'?");
                 if (okToOverwrite)
-                    RemoveCurrentSavedGame();
+                    await RemoveCurrentSavedGame();
                 else
                     return;
             }
@@ -334,13 +352,15 @@ namespace Sudoku.Components
             await JsRuntime.InvokeVoidAsync("alert", "Congratulations! You have completed the game.");
 
             if (CommonData.CurrentTitle != "")
-                RemoveCurrentSavedGame();
+                await RemoveCurrentSavedGame();
         }
 
-        private void RemoveCurrentSavedGame()
+        private async Task RemoveCurrentSavedGame()
         {
             CommonData.SavedGames.RemoveAll(SavedGame => SavedGame.Title == CommonData.CurrentTitle);
+            await SaveSettings();
         }
+
         private async Task SaveSettings()
         {
             List<string> settingsList = new();

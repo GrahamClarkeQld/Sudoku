@@ -1,0 +1,48 @@
+﻿@inherits ComponentBase
+
+<div class="info-container @(IsShown? "front" : "back hidden")" >
+	<h5 style="text-align: center">Graham's Sudoku</h5>
+	<ul id="info-top">
+		<li><a href="#enterNumbers">Enter Numbers</a></li>
+		<li><a href="#breakpoints">Breakpoints</a></li>
+		<li><a href="#savedGames">Saved Games</a></li>
+	</ul>
+	<h6 id="enterNumbers">Enter Numbers</h6>
+	<p>You can either enter numbers directly into the selected cell or choose Candidate mode to <i>pencil in</i> a possible value.</p>
+	<p>Use the button above the numbered grid to swap between modes.</p>	
+	<p>Use the <i>Clear</i> button to remove the contents of the selected cell. If the cell has a chosen number then it is removed and any candidates are shown. 
+		Otherwise the candidates are all removed.</p>
+	<p>Unlimited undo/redo is available.</p>
+	<h6 id="breakpoints">Breakpoints</h6>
+	<p>Use <i>breakpoints</i> to set a return point when you are no longer certain of numbers and you start guessing.</p>
+	<p>You can set any number of breakpoints. The <i>return</i> will roll back to the latest breakpoint (as shown in the button text).</p>
+	<h6 id="savedGames">Saved Games</h6>
+	<p>Use the button at the top of the control area to either save the current game or to load a previously saved game.
+		Save a game and you can come back to it at any time.</p>
+	<p>Note that the current game is not automatically saved if you terminate the web app!</p>
+	<p>Give the name a meaningful title, as you can save as many games as you like.</p>
+	<p>If you try save the current game with the same name or the name of another saved game you will prompted to confirm.</p>
+	<p>If you successfully complete a saved game it will be removed from the list of available games.</p>
+	<p>You can choose to remove all of the saved games. You will be prompted to confirm. There is no way to undo this!</p>
+	<a href="#info-top" style="color:blue; text-decoration:underline">Back to Top</a>
+</div>
+
+@code {
+	[Parameter]
+	public bool IsShown { get; set; } = true;
+
+	[CascadingParameter(Name = "Common Data")]
+	private SharedData CommonData { get; set; }
+
+
+}
+
+<style>
+	.info-container {
+		font-size: 12px;
+		overflow-y: scroll;
+		max-height: 85%;
+		margin: 5px;
+	}
+
+</style>
