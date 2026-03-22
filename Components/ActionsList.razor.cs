@@ -18,7 +18,7 @@ namespace Sudoku.Components
 
         private Stack<SudokuMove> _undoStack = new Stack<SudokuMove>();
         private Stack<SudokuMove> _redoStack = new Stack<SudokuMove>();
-        private List<string> _breakpoints = new();
+        private List<Breakpoint> _breakpoints = new();
         private int _selectedSavedGameId = -1;
 
         // properties
@@ -81,6 +81,8 @@ namespace Sudoku.Components
                 if (move.IsBreakpoint)
                 {
                     SetUndoBreakpoint(false);
+                    await SetSelectedCellRequest.InvokeAsync((_breakpoints[_breakpoints.Count-1].SelectedGrid, _breakpoints[_breakpoints.Count - 1].SelectedCell));
+                    RemoveBreakpoint();
                     return;
                 }
                 await ProcessUndo();
@@ -103,13 +105,16 @@ namespace Sudoku.Components
         [Parameter]
         public EventCallback ResetGameRequest { get; set; }
 
+        [Parameter]
+        public EventCallback<(int, int)> SetSelectedCellRequest { get; set; }
+
         // style
 
         // methods
 
         private void AddBreakpoint(SudokuMove move)
         {
-            _breakpoints.Add($"{move.ToString()}");
+            _breakpoints.Add(new Breakpoint(CommonData.SelectedGrid, CommonData.SelectedCell, move));
         }
 
         public void AddMove(SudokuMove move)

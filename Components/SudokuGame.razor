@@ -32,6 +32,7 @@
 			<ActionsList @ref="_actions" IsShown="@(CommonData.CurrentControlMode == SharedData.ControlMode.NumbersEntry)"
 						 ClearCellRequest="ClearCellRequest"
 						 ActionRequest="ActionRequest"
+						 SetSelectedCellRequest="SetSelectedCellRequest"
 						 ResetGameRequest="ResetGameRequest" />
 			<SavedGamesControl IsShown="@(CommonData.CurrentControlMode == SharedData.ControlMode.SavedGameControl)"
 						 SaveGameRequest="SaveGameRequest"
