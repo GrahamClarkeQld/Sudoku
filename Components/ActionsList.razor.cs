@@ -170,13 +170,16 @@ namespace Sudoku.Components
                 AddBreakpoint(move);
         }
 
-        public async Task Reset()
+        public async Task Reset(bool rollback)
         {
-            while (_undoStack.Count > 0)
-            {
-                await ProcessUndo();
-            }
+            if (rollback)
+                while (_undoStack.Count > 0)
+                {
+                    await ProcessUndo();
+                }
             _breakpoints.Clear();
+            _redoStack.Clear();
+            _undoStack.Clear();
         }
 
         private bool UnableToAddBreakpoint()

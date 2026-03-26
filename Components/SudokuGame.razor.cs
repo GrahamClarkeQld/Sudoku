@@ -149,7 +149,7 @@ namespace Sudoku.Components
         private async Task LoadGameRequest(int gameId)
         {
             Console.WriteLine($"LoadGameRequest Id={gameId}");
-            ResetGameRequest();
+            await ResetGameRequest();
             foreach (SavedGame game in CommonData.SavedGames)
             {
                 Console.WriteLine($"SavedGame {game.Id}: {game.Title} = {game.GameString}");
@@ -207,17 +207,23 @@ namespace Sudoku.Components
             CommonData.CurrentTitle = title;
             CommonData.SavedGames.Add(new SavedGame(CommonData.SavedGames.Count + 1, CommonData.CurrentTitle, this.ToString()));
             await SaveSettings();
+            await _actions.Reset(false);
         }
 
-        private void ResetGameRequest()
+        private async Task ResetGameRequest()
         {
-            foreach (NumberedButton btn in CommonData.NumberedButtons)
-                btn.Reset();
-            for (int gridIdx = 0; gridIdx < 9; gridIdx++)
-                for (int cellIdx = 0; cellIdx < 9; cellIdx++)
-                    _values[gridIdx, cellIdx] = 0;
-            foreach (SudokuGrid grid in _grids)
-                grid.Reset();
+            if (CommonData.CurrentTitle == string.Empty)
+            {
+                foreach (NumberedButton btn in CommonData.NumberedButtons)
+                    btn.Reset();
+                for (int gridIdx = 0; gridIdx < 9; gridIdx++)
+                    for (int cellIdx = 0; cellIdx < 9; cellIdx++)
+                        _values[gridIdx, cellIdx] = 0;
+                foreach (SudokuGrid grid in _grids)
+                    grid.Reset();
+            }
+            else 
+                await _actions.Reset(true);
 
             CommonData.GameHasChanged = false;
         }
