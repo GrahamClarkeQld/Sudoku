@@ -210,6 +210,11 @@ namespace Sudoku.Components
             await _actions.Reset(false);
         }
 
+        private async Task NewGameRequest()
+        {
+            await ResetGameRequest();
+        }
+
         private async Task ResetGameRequest()
         {
             if (CommonData.CurrentTitle == string.Empty)

@@ -25,6 +25,12 @@
 			Clear Saved Games
 		</button>
 	</div>
+	<div></div>
+	<div>
+		<button class="common-button" @onclick="NewGameButtonClick">
+			New Game
+		</button>
+	</div>
 </div>
 
 @code {
@@ -46,6 +52,9 @@
 	[Parameter]
 	public EventCallback<string> SaveGameRequest { get; set; }
 
+	[Parameter]
+	public EventCallback NewGameRequest { get; set; }
+
 	private async Task ClearSavedGamesButtonClick()
 	{
 		await ClearSavedGamesRequest.InvokeAsync();
@@ -54,6 +63,11 @@
 	private async Task HandleGameSelection(int savedGameId)
 	{
 		await LoadGameRequest.InvokeAsync(savedGameId);
+	}
+
+	private async Task NewGameButtonClick()
+	{
+		await NewGameRequest.InvokeAsync();	
 	}
 
 	private async Task SaveGameButtonClick()
