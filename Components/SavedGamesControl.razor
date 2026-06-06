@@ -39,7 +39,7 @@
 	public bool IsShown { get; set; } = false;	
 
 	[CascadingParameter(Name = "Common Data")]
-	private SharedData CommonData { get; set; }
+	private SharedData? CommonData { get; set; }
 
 	private int _selectedSavedGameId = -1;
 
