@@ -19,7 +19,6 @@ namespace Sudoku.Components
         private Stack<SudokuMove> _undoStack = new Stack<SudokuMove>();
         private Stack<SudokuMove> _redoStack = new Stack<SudokuMove>();
         private List<Breakpoint> _breakpoints = new();
-        private int _selectedSavedGameId = -1;
 
         // properties
 
