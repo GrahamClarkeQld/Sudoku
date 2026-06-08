@@ -219,17 +219,7 @@ namespace Sudoku.Components
 
         private async Task ResetGameRequest()
         {
-            foreach (NumberedButton btn in CommonData.NumberedButtons)
-                btn.Reset();
-            for (int gridIdx = 0; gridIdx < 9; gridIdx++)
-                for (int cellIdx = 0; cellIdx < 9; cellIdx++)
-                    _values[gridIdx, cellIdx] = 0;
-            foreach (SudokuGrid grid in _grids)
-                grid.Reset();
-            await _actions.Reset(false);
-
-            if (CommonData.SelectedSavedGameId != -1)
-                await LoadGameRequest(CommonData.SelectedSavedGameId);
+            await _actions.Reset(true);
 
             CommonData.GameHasChanged = false;
         }
