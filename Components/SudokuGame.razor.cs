@@ -15,7 +15,7 @@ namespace Sudoku.Components
 
         private int[,] _values = new int[9, 9];
         private ActionsList _actions = new();
-
+        private string _gameNameIdent = $@"~GameName~";
         private List<SudokuGrid> _grids = new List<SudokuGrid>();
         private SudokuGrid NewGrid { set => _grids.Add(value); }
 
@@ -53,7 +53,10 @@ namespace Sudoku.Components
             foreach (string setting in settingsList)
             {
                 string[] args = setting.Split(':');
-                CommonData.SavedGames.Add(new SavedGame(CommonData.SavedGames.Count+1, args[0], args[1]));
+                if (args[0] == _gameNameIdent)
+                    CommonData.GameNames.Add(args[1]);
+                else
+                    CommonData.SavedGames.Add(new SavedGame(CommonData.SavedGames.Count+1, args[0], args[1]));
             }
         }
 
@@ -368,6 +371,8 @@ namespace Sudoku.Components
             List<string> settingsList = new();
             foreach (SavedGame game in CommonData.SavedGames)
                 settingsList.Add(game.ToString());
+            foreach (string gameName in CommonData.GameNames)
+                settingsList.Add($@"{_gameNameIdent}:{gameName}");
             await SettingsService.SaveStringListAsync(settingsList);
         }
 

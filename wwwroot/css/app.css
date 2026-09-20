@@ -148,6 +148,10 @@ code {
     width: 87px;
 }
 
+.slim-button {
+    height: 30px;
+}
+
 .front {
     z-index: 1;
 }

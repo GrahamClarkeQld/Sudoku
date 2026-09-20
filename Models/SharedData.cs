@@ -10,6 +10,7 @@
         }
 
         public List<SavedGame> SavedGames = new();
+        public List<string> GameNames = new();
         public List<NumberedButton> NumberedButtons = new();
         public bool NumberEntryMode = true;
         public ControlMode CurrentControlMode = ControlMode.NumbersEntry;

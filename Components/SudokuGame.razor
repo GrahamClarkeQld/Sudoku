@@ -9,15 +9,7 @@
 				<button class="common-button enter-button" @onclick="ControlPanelButtonClick">
 					@if (@CommonData.CurrentControlMode == @SharedData.ControlMode.NumbersEntry)
 					{
-						@if (CommonData.CurrentTitle == "")
-						{
-							<span>Save this Game<br></span>
-							<span>@((CommonData.SavedGames.Count == 0)? "" : "or Select Game")</span>
-						}
-						else
-						{
-							<span>@CommonData.CurrentTitle</span>
-						}
+						<span>Games Menu<br></span>
 					}
 					else
 					{

@@ -3,13 +3,26 @@
 
 <div class="@(IsShown? "front" : "back hidden")">
 	<div>
-		<button class="common-button" @onclick="SaveGameButtonClick" disabled="@(!CommonData.GameHasChanged)">
-			Save Game
+		<label for="save-game-select">Name for Game:</label>
+		<input type="text" id="save-game-select" class="form-control ms-2"
+			   list="names-list" @onchange="SaveGameChange" disabled="@(!CommonData.GameHasChanged)" />
+
+		<datalist id="names-list">
+			@foreach (var game in CommonData.GameNames)
+			{
+				<option value="@game"></option>
+			}
+		</datalist>
+	</div>
+	<div style="margin-top: 25px">
+		<button class="common-button slim-button" @onclick="AddNameButtonClick" disabled="@IsNameSaveDisabled">
+			Add Name to List
 		</button>
 	</div>
 	<div style="margin-top: 25px; margin-bottom: 25px">
 		@*<InputSelect @bind-Value="_selectedSavedGameId" @bind-Value:after="HandleGameSelection">*@
 		<InputSelect TValue="int"
+					 disabled="@(CommonData.SavedGames.Count == 0)"
 					 Value="_selectedSavedGameId"
 					 ValueChanged="@((int value) => HandleGameSelection(value))"
 					 ValueExpression="@(() => _selectedSavedGameId)">
@@ -60,6 +73,9 @@
 		await ClearSavedGamesRequest.InvokeAsync();
 	}
 
+    private bool IsNameSaveDisabled => 
+		string.IsNullOrWhiteSpace(CommonData?.CurrentTitle) || CommonData?.GameNames.Contains(CommonData.CurrentTitle) == true;
+
 	private async Task HandleGameSelection(int savedGameId)
 	{
 		await LoadGameRequest.InvokeAsync(savedGameId);
@@ -70,13 +86,17 @@
 		await NewGameRequest.InvokeAsync();	
 	}
 
-	private async Task SaveGameButtonClick()
+    private async Task SaveGameChange(ChangeEventArgs e)
+    {
+        if (e.Value.ToString() != "")
+            await SaveGameRequest.InvokeAsync(e.Value.ToString());
+    }
+
+	private async Task AddNameButtonClick()
 	{
-		string title = await JsRuntime.InvokeAsync<string>("prompt", "Please enter the game's Title:",
-														   (CommonData.CurrentTitle == "no name") ? "" : CommonData.CurrentTitle);
-		if (title != "")
+		if (CommonData.CurrentTitle != "")
 		{
-			await SaveGameRequest.InvokeAsync(title);
+			CommonData.GameNames.Add(CommonData.CurrentTitle);
 		}
 	}
 
