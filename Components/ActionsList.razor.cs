@@ -93,7 +93,7 @@ namespace Sudoku.Components
             await ProcessUndo();
         }
 
-        // callbacks
+        // callbacks & actions
 
         [Parameter]
         public EventCallback<(SudokuAction, bool)> ActionRequest { get; set; }
@@ -171,11 +171,6 @@ namespace Sudoku.Components
 
         public async Task Reset(bool rollback)
         {
-            if (rollback)
-                while (_undoStack.Count > 0)
-                {
-                    await ProcessUndo();
-                }
             _breakpoints.Clear();
             _redoStack.Clear();
             _undoStack.Clear();

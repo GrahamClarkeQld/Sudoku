@@ -28,7 +28,7 @@
 
 	[Parameter]
 	public int ParentGrid { get; set; }
-
+	public Sudoku3x3 Candidates { get => _candidates; }
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();

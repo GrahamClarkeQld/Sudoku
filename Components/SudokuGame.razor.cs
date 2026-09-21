@@ -222,7 +222,13 @@ namespace Sudoku.Components
 
         private async Task ResetGameRequest()
         {
+            for (int gridIdx = 0; gridIdx < 9; gridIdx++)
+                ChildGrid(gridIdx).Reset();
+
             await _actions.Reset(true);
+
+            if (CommonData.SelectedSavedGameId > -1)
+                await LoadGameRequest(CommonData.SelectedSavedGameId);
 
             CommonData.GameHasChanged = false;
         }
