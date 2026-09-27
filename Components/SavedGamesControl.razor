@@ -14,11 +14,6 @@
 			}
 		</datalist>
 	</div>
-	<div style="margin-top: 25px">
-		<button class="common-button slim-button" @onclick="AddNameButtonClick" disabled="@IsNameSaveDisabled">
-			Add Name to List
-		</button>
-	</div>
 	<div style="margin-top: 25px; margin-bottom: 25px">
 		@*<InputSelect @bind-Value="_selectedSavedGameId" @bind-Value:after="HandleGameSelection">*@
 		<InputSelect TValue="int"
@@ -65,9 +60,6 @@
 	[Parameter]
 	public EventCallback<string> SaveGameRequest { get; set; }
 
-	[Parameter]
-	public EventCallback NewGameRequest { get; set; }
-
 	private async Task ClearSavedGamesButtonClick()
 	{
 		await ClearSavedGamesRequest.InvokeAsync();
@@ -91,14 +83,6 @@
         if (e.Value.ToString() != "")
             await SaveGameRequest.InvokeAsync(e.Value.ToString());
     }
-
-	private async Task AddNameButtonClick()
-	{
-		if (CommonData.CurrentTitle != "")
-		{
-			CommonData.GameNames.Add(CommonData.CurrentTitle);
-		}
-	}
 
 
 }

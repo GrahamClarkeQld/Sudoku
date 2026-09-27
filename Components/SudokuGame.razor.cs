@@ -210,6 +210,8 @@ namespace Sudoku.Components
             }
             CommonData.CurrentTitle = title;
             CommonData.SavedGames.Add(new SavedGame(CommonData.SavedGames.Count + 1, CommonData.CurrentTitle, this.ToString()));
+            if (!CommonData.GameNames.Contains(title))
+                CommonData.GameNames.Add(title);    
             await SaveSettings();
             await _actions.Reset(false);
         }
