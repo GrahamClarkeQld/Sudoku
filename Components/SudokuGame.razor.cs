@@ -230,6 +230,10 @@ namespace Sudoku.Components
             for (int idx = 0; idx < 9; idx++)
                 CommonData.NumberedButtons[idx].Usage = 0;
 
+            for (int gridIdx = 0; gridIdx < 9; gridIdx++)
+                for (int cellIdx = 0; cellIdx < 9; cellIdx++)
+                    _values[gridIdx, cellIdx] = 0;
+
             await _actions.Reset(true);
 
             if (CommonData.SelectedSavedGameId > -1)
