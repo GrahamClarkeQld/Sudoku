@@ -35,7 +35,7 @@
 	</div>
 	<div></div>
 	<div>
-		<button class="common-button" @onclick="NewGameButtonClick">
+		<button class="common-button" @onclick="NewGameButtonClick" disabled="@(!CommonData.GameHasChanged)">
 			New Game
 		</button>
 	</div>

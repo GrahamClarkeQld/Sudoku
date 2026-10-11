@@ -220,8 +220,12 @@ namespace Sudoku.Components
 
         private async Task NewGameRequest()
         {
-            CommonData.SelectedSavedGameId = -1;
-            await ResetGameRequest();
+            bool okToReset = await JsRuntime.InvokeAsync<bool>("confirm", $"Do you want to clear the current game?");
+            if (okToReset)
+            {
+                CommonData.SelectedSavedGameId = -1;
+                await ResetGameRequest();
+            }
         }
 
         private async Task ResetGameRequest()
