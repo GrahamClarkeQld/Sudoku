@@ -58,6 +58,9 @@
 	public EventCallback<int> LoadGameRequest { get; set; }
 
 	[Parameter]
+	public EventCallback<int> NewGameRequest { get; set; }
+
+	[Parameter]
 	public EventCallback<string> SaveGameRequest { get; set; }
 
 	private async Task ClearSavedGamesButtonClick()
@@ -75,6 +78,7 @@
 
 	private async Task NewGameButtonClick()
 	{
+		await NewGameRequest.InvokeAsync();
 	}
 
     private async Task SaveGameChange(ChangeEventArgs e)

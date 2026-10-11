@@ -58,6 +58,8 @@ namespace Sudoku.Components
                 else
                     CommonData.SavedGames.Add(new SavedGame(CommonData.SavedGames.Count+1, args[0], args[1]));
             }
+            CommonData.GameNames.Sort();
+            CommonData.SavedGames.Sort((x, y) => x.Title.CompareTo(y.Title));
         }
 
         // events
