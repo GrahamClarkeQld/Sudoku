@@ -22,17 +22,17 @@
 
 
 @code {
-    [Parameter]
-	public bool IsShown { get; set; } = true;
+        [Parameter]
+        public bool IsShown { get; set; } = true;
 
-    [CascadingParameter(Name = "Common Data")]
-    private SharedData CommonData { get; set; }
+        [CascadingParameter(Name = "Common Data")]
+        private SharedData CommonData { get; set; }
 
-    [Parameter]
-    public EventCallback GameModeChangeRequest { get; set; }
+        [Parameter]
+        public EventCallback GameModeChangeRequest { get; set; }
 
-    [Parameter]
-    public EventCallback<int> NumberedButtonClickRequest { get; set; }
+        [Parameter]
+        public EventCallback<int> NumberedButtonClickRequest { get; set; }
 
     private string NumberedButtonClassString(int btnIdx)
     {        
@@ -43,11 +43,13 @@
 
     private async Task GameModeButtonClick()
     {
+        CommonData.LogAction($@"Mode Button");
         await GameModeChangeRequest.InvokeAsync();
     }
 
     private async Task NumberedButtonClick(int btn)
     {
+        CommonData.LogAction($@"Numbered Button {btn + 1}");
         await NumberedButtonClickRequest.InvokeAsync(btn);
     }
 

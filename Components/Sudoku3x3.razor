@@ -15,6 +15,9 @@
     [Parameter]
     public bool IsShown { get; set; } = false;
 
+   [CascadingParameter(Name = "Common Data")]
+   private SharedData CommonData { get; set; }
+
     public List<CandidateCell> Cells = new List<CandidateCell>();
     public CandidateCell NewCell { set => Cells.Add(value); }
 

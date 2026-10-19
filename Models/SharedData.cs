@@ -6,9 +6,10 @@
         { 
             NumbersEntry = 0,
             SavedGameControl,
-            UserHelp
+            UserHelp,
+            LogDisplay
         }
-
+        public List<string> ActionLog = new();
         public List<SavedGame> SavedGames = new();
         public List<string> GameNames = new();
         public List<NumberedButton> NumberedButtons = new();
@@ -22,5 +23,10 @@
         public int SelectedCell = -1;
         public int SelectedSavedGameId = -1;
         public int ActiveButton = -1;
+
+        public void LogAction(string action)
+        {
+            ActionLog.Add(action);
+        }
     }
 }

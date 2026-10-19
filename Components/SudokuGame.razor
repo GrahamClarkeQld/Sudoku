@@ -32,6 +32,7 @@
 					     NewGameRequest="NewGameRequest"
 						 ClearSavedGamesRequest="ClearSavedGamesRequest" />
 			<UserHelp IsShown="@(CommonData.CurrentControlMode == SharedData.ControlMode.UserHelp)" />
+			<LogDisplay IsShown="@(CommonData.CurrentControlMode == SharedData.ControlMode.LogDisplay)" />
 		</div>
 		<div class="sudoku-board">
 			@for (int gridIdx = 0; gridIdx < 9; gridIdx++)
@@ -44,6 +45,11 @@
 				<span>
 					<button class="info-button" @onclick="InfoButtonClick">
 						Info
+					</button>
+				</span>
+				<span>
+					<button class="info-button" @onclick="LogButtonClick">
+						Log
 					</button>
 				</span>
 				<span>Copyright &copy; Graham Clarke 2026</span>

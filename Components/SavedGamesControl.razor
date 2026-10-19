@@ -73,16 +73,19 @@
 
 	private async Task HandleGameSelection(int savedGameId)
 	{
+        CommonData.LogAction($@"Select Game {savedGameId}");
 		await LoadGameRequest.InvokeAsync(savedGameId);
 	}
 
 	private async Task NewGameButtonClick()
 	{
+        CommonData.LogAction("New Game Button");
 		await NewGameRequest.InvokeAsync();
 	}
 
     private async Task SaveGameChange(ChangeEventArgs e)
     {
+        CommonData.LogAction($@"Save Game {e.Value}");
         if (e.Value.ToString() != "")
             await SaveGameRequest.InvokeAsync(e.Value.ToString());
     }

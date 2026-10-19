@@ -1,0 +1,19 @@
+﻿@inherits ComponentBase
+@inject IJSRuntime JsRuntime
+<div class="@(IsShown? "front" : "back hidden")">
+	<h5 style="text-align: center">Action Log</h5>
+	<ul style="font-size: 9px">
+		@foreach (var action in CommonData.ActionLog)
+		{
+			<li>@action</li>
+		}
+	</ul>
+</div>
+@code {
+	[Parameter]
+	public bool IsShown { get; set; } = true;
+
+	[CascadingParameter(Name = "Common Data")]
+	private SharedData CommonData { get; set; }
+}
+

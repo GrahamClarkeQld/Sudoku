@@ -42,6 +42,7 @@ namespace Sudoku.Components
 
         private void AddBreakpointButtonClick()
         {
+            CommonData.LogAction("Add Breakpoint Button");
             SudokuMove move = _undoStack.Peek();
             if (!move.IsBreakpoint)
                 SetUndoBreakpoint(true);
@@ -49,12 +50,13 @@ namespace Sudoku.Components
 
         private async Task ClearButtonClick()
         {
+            CommonData.LogAction("Clear Button");
             await ClearCellRequest.InvokeAsync();
         }
 
         private async Task RedoButtonClick()
         {
-
+            CommonData.LogAction("Redo Button");
             SudokuMove move = _redoStack.Pop();
             _undoStack.Push(move);
             if (move.IsBreakpoint)
@@ -67,6 +69,7 @@ namespace Sudoku.Components
 
         private async Task ResetButtonClick()
         {
+            CommonData.LogAction("Reset Button");
             bool confirmReset = await JsRuntime.InvokeAsync<bool>("confirm", "Really Reset the game?");
             if (confirmReset)
                 await ResetGameRequest.InvokeAsync();
@@ -74,6 +77,7 @@ namespace Sudoku.Components
 
         private async Task ReturnToBreakpointButtonClick()
         {
+            CommonData.LogAction("Return to Breakpoint Button");
             while (_undoStack.Count > 0)
             {
                 SudokuMove move = _undoStack.Peek();
@@ -90,6 +94,7 @@ namespace Sudoku.Components
 
         private async Task UndoButtonClick()
         {
+            CommonData.LogAction("Undo Button");
             await ProcessUndo();
         }
 

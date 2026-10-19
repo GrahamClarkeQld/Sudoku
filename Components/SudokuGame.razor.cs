@@ -77,7 +77,11 @@ namespace Sudoku.Components
                 case SharedData.ControlMode.UserHelp:
                     CommonData.CurrentControlMode = SharedData.ControlMode.NumbersEntry;
                     break;
+                case SharedData.ControlMode.LogDisplay:
+                    CommonData.CurrentControlMode = SharedData.ControlMode.NumbersEntry;
+                    break;
             }
+            CommonData.LogAction($@"Game Mode Button {CommonData.CurrentControlMode}");
         }
         
         // callbacks ----------------------------------------------------------------------------------------------------------------
@@ -147,8 +151,16 @@ namespace Sudoku.Components
 
         private void InfoButtonClick()
         {
+            CommonData.LogAction("Info Button");
             if (CommonData.CurrentControlMode != SharedData.ControlMode.UserHelp)
                 CommonData.CurrentControlMode = SharedData.ControlMode.UserHelp;
+        }
+
+        private void LogButtonClick()
+        {
+            CommonData.LogAction("Log Button");
+            if (CommonData.CurrentControlMode != SharedData.ControlMode.LogDisplay)
+                CommonData.CurrentControlMode = SharedData.ControlMode.LogDisplay;
         }
 
         private async Task LoadGameRequest(int gameId)
