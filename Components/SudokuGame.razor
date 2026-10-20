@@ -2,61 +2,70 @@
 @inject IJSRuntime JsRuntime
 @inject UserSettingsService SettingsService
 
-<CascadingValue Value="@CommonData" Name="Common Data">
-	<div class="parent-container">
-		<div style="width:220px; height:700px" >
-			<div style="display: flex">
-				<button class="common-button enter-button" @onclick="ControlPanelButtonClick">
-					@if (@CommonData.CurrentControlMode == @SharedData.ControlMode.NumbersEntry)
-					{
-						<span>Games Menu<br></span>
-					}
-					else
-					{
-						<span>Return to Game</span>
-					}
-				</button>
-			</div>
+<ErrorBoundary>
+	<ChildContent>
+		<CascadingValue Value="@CommonData" Name="Common Data">
+			<div class="parent-container">
+				<div style="width:220px; height:700px" >
+					<div style="display: flex">
+						<button class="common-button enter-button" @onclick="ControlPanelButtonClick">
+							@if (@CommonData.CurrentControlMode == @SharedData.ControlMode.NumbersEntry)
+							{
+								<span>Games Menu<br></span>
+							}
+							else
+							{
+								<span>Return to Game</span>
+							}
+						</button>
+					</div>
 
-			<NumberedButtonsList IsShown="@(CommonData.CurrentControlMode == SharedData.ControlMode.NumbersEntry)"
-				GameModeChangeRequest="GameModeChangeRequest"
-				NumberedButtonClickRequest="NumberedButtonClickRequest"/>
-			<ActionsList @ref="_actions" IsShown="@(CommonData.CurrentControlMode == SharedData.ControlMode.NumbersEntry)"
-						 ClearCellRequest="ClearCellRequest"
-						 ActionRequest="ActionRequest"
-						 SetSelectedCellRequest="SetSelectedCellRequest"
-						 ResetGameRequest="ResetGameRequest" />
-			<SavedGamesControl IsShown="@(CommonData.CurrentControlMode == SharedData.ControlMode.SavedGameControl)"
-						 SaveGameRequest="SaveGameRequest"
-						 LoadGameRequest="LoadGameRequest"
-					     NewGameRequest="NewGameRequest"
-						 ClearSavedGamesRequest="ClearSavedGamesRequest" />
-			<UserHelp IsShown="@(CommonData.CurrentControlMode == SharedData.ControlMode.UserHelp)" />
-			<LogDisplay IsShown="@(CommonData.CurrentControlMode == SharedData.ControlMode.LogDisplay)" />
-		</div>
-		<div class="sudoku-board">
-			@for (int gridIdx = 0; gridIdx < 9; gridIdx++)
-			{
-				int idx = gridIdx;
-				<SudokuGrid @ref="NewGrid" Tag=@idx SetSelectedCellRequest="SetSelectedCellRequest" BackgroundColor="@(idx % 2 == 0 ? "White" : "Gainsboro")" />
-			}
-			<div class="footer-line">
-				<span>Sudoku v: @CommonData.VersionNumber</span>
-				<span>
-					<button class="info-button" @onclick="InfoButtonClick">
-						Info
-					</button>
-				</span>
-				<span>
-					<button class="info-button" @onclick="LogButtonClick">
-						Log
-					</button>
-				</span>
-				<span>Copyright &copy; Graham Clarke 2026</span>
+					<NumberedButtonsList IsShown="@(CommonData.CurrentControlMode == SharedData.ControlMode.NumbersEntry)"
+						GameModeChangeRequest="GameModeChangeRequest"
+						NumberedButtonClickRequest="NumberedButtonClickRequest"/>
+					<ActionsList @ref="_actions" IsShown="@(CommonData.CurrentControlMode == SharedData.ControlMode.NumbersEntry)"
+								 ClearCellRequest="ClearCellRequest"
+								 ActionRequest="ActionRequest"
+								 SetSelectedCellRequest="SetSelectedCellRequest"
+								 ResetGameRequest="ResetGameRequest" />
+					<SavedGamesControl IsShown="@(CommonData.CurrentControlMode == SharedData.ControlMode.SavedGameControl)"
+								 SaveGameRequest="SaveGameRequest"
+								 LoadGameRequest="LoadGameRequest"
+								 NewGameRequest="NewGameRequest"
+								 ClearSavedGamesRequest="ClearSavedGamesRequest" />
+					<UserHelp IsShown="@(CommonData.CurrentControlMode == SharedData.ControlMode.UserHelp)" />
+					<LogDisplay IsShown="@(CommonData.CurrentControlMode == SharedData.ControlMode.LogDisplay)" />
+				</div>
+				<div class="sudoku-board">
+					@for (int gridIdx = 0; gridIdx < 9; gridIdx++)
+					{
+						int idx = gridIdx;
+						<SudokuGrid @ref="NewGrid" Tag=@idx SetSelectedCellRequest="SetSelectedCellRequest" BackgroundColor="@(idx % 2 == 0 ? "White" : "Gainsboro")" />
+					}
+					<div class="footer-line">
+						<span>Sudoku v: @CommonData.VersionNumber</span>
+						<span>
+							<button class="info-button" @onclick="InfoButtonClick">
+								Info
+							</button>
+						</span>
+						<span>
+							<button class="info-button" @onclick="LogButtonClick">
+								Log
+							</button>
+						</span>
+						<span>Copyright &copy; Graham Clarke 2026</span>
+					</div>
+				</div>
 			</div>
-		</div>
-	</div>
-</CascadingValue>
+		</CascadingValue>
+	</ChildContent>
+	<ErrorContent Context= "ex">
+		@{
+			HandleError(ex);
+		}
+	</ErrorContent>
+</ErrorBoundary>
 
 <style>
 	.sudoku-board {

@@ -426,5 +426,13 @@ namespace Sudoku.Components
             ChildGrid(numberedGrid).ErrorState(numberedCell, false);
             ChildGrid(candidateGrid).ErrorState(candidateCell, false);
         }
+
+        private void HandleError(Exception ex)
+        { 
+            CommonData.LogAction($"Error: {ex.Message}");
+            CommonData.LogAction($" - source: {ex.Source}");
+            CommonData.CurrentControlMode = SharedData.ControlMode.LogDisplay;
+        }
+
     } // SudokuBoard class
 }
